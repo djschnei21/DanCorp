@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatRoute, formatWindow } from "@/lib/format";
+import { formatDistance, formatRoute, formatSpeed, formatWindow, legCountdown } from "@/lib/format";
 import type { BoardMission, MissionStatus } from "@/lib/types";
 import { LegReadout } from "./LegReadout";
 import { StatusBadge } from "./StatusBadge";
@@ -31,47 +31,65 @@ export function MissionTable({ missions }: { missions: BoardMission[] }) {
 
   return (
     <>
-      <div className="hidden overflow-hidden rounded-3xl border border-card-04 bg-card min-[720px]:block">
-        <table className="w-full text-left text-sm">
+      <div className="hidden overflow-x-auto rounded-3xl border border-card-04 bg-card min-[720px]:block">
+        <table className="w-full min-w-[1080px] text-left text-sm">
           <thead className="bg-card-01 text-[11px] uppercase tracking-[0.16em] text-muted">
             <tr>
-              <th className="px-4 py-3 font-medium">Mission</th>
-              <th className="px-4 py-3 font-medium">Customer</th>
-              <th className="px-4 py-3 font-medium">Vehicle</th>
-              <th className="px-4 py-3 font-medium">Cargo</th>
-              <th className="px-4 py-3 font-medium">Window</th>
-              <th className="px-4 py-3 font-medium">Status</th>
+              <th className="px-3 py-3 font-medium">Mission</th>
+              <th className="px-3 py-3 font-medium">Customer</th>
+              <th className="px-3 py-3 font-medium">Origin</th>
+              <th className="px-3 py-3 font-medium">Destination</th>
+              <th className="px-3 py-3 font-medium">Distance</th>
+              <th className="px-3 py-3 font-medium">Speed</th>
+              <th className="px-3 py-3 font-medium">Vehicle</th>
+              <th className="px-3 py-3 font-medium">Cargo</th>
+              <th className="px-3 py-3 font-medium">Window</th>
+              <th className="px-3 py-3 font-medium">Status</th>
             </tr>
           </thead>
           <tbody>
-            {missions.map((mission) => (
-              <tr
-                key={mission.id}
-                className={`border-t border-card-04 hover:bg-card-01 ${
-                  mission.status === "delayed" ? "bg-accent/[0.07]" : ""
-                }`}
-              >
-                <td className="relative px-4 py-3">
-                  <span className={`absolute inset-y-2 left-0 w-[3px] rounded-full ${rail[mission.status]}`} />
-                  <Link href={`/missions/${mission.id}`} className="font-mono hover:text-accent">
-                    {mission.id}
-                  </Link>
-                </td>
-                <td className="px-4 py-3">
-                  <div>{mission.customerName}</div>
-                  <div className="text-muted">{formatRoute(mission.origin, mission.destination)}</div>
-                  <div className="mt-1">
-                    <LegReadout mission={mission} dense />
-                  </div>
-                </td>
-                <td className="px-4 py-3">{mission.vehicleName}</td>
-                <td className="px-4 py-3">{mission.cargo}</td>
-                <td className="px-4 py-3 tabular-nums">{formatWindow(mission.windowStart)}</td>
-                <td className="px-4 py-3">
-                  <StatusBadge status={mission.status} />
-                </td>
-              </tr>
-            ))}
+            {missions.map((mission) => {
+              const countdown = legCountdown(mission);
+              const live = mission.status === "in_flight" ? "text-accent" : "";
+              return (
+                <tr
+                  key={mission.id}
+                  className={`border-t border-card-04 hover:bg-card-01 ${
+                    mission.status === "delayed" ? "bg-accent/[0.07]" : ""
+                  }`}
+                >
+                  <td className="relative whitespace-nowrap px-3 py-3">
+                    <span className={`absolute inset-y-2 left-0 w-[3px] rounded-full ${rail[mission.status]}`} />
+                    <Link href={`/missions/${mission.id}`} className="font-mono hover:text-accent">
+                      {mission.id}
+                    </Link>
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">{mission.customerName}</td>
+                  <td className="whitespace-nowrap px-3 py-3">{mission.origin}</td>
+                  <td className="whitespace-nowrap px-3 py-3">{mission.destination}</td>
+                  <td className={`whitespace-nowrap px-3 py-3 font-mono tabular-nums ${live}`}>
+                    {formatDistance(mission.distanceKm)}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    <div className={`font-mono tabular-nums ${live}`}>{formatSpeed(mission.speedKmh)}</div>
+                    {mission.status === "in_flight" ? (
+                      <div className="mt-1.5 h-1 w-24 overflow-hidden rounded-full bg-fg/15" aria-hidden="true">
+                        <div className="h-full bg-accent" style={{ width: `${mission.flown * 100}%` }} />
+                      </div>
+                    ) : null}
+                    {countdown ? (
+                      <div className="mt-1 font-mono text-[11px] tabular-nums text-accent">{countdown}</div>
+                    ) : null}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">{mission.vehicleName}</td>
+                  <td className="px-3 py-3">{mission.cargo}</td>
+                  <td className="whitespace-nowrap px-3 py-3 tabular-nums">{formatWindow(mission.windowStart)}</td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    <StatusBadge status={mission.status} />
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
