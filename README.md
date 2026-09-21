@@ -4,7 +4,7 @@
 
 The suite should show one failure: `delayed missions are not on time`. Every other test passes. On time on the dispatch board reads 6 until that function counts delivered missions only.
 
-DanCorp Dispatch is the duty console for one UTC shift, 21 Sep 2026. Low Earth orbit, same shift.
+DanCorp is a short-haul orbital courier. Dispatch is the duty console for one UTC shift, 21 Sep 2026.
 
 ## Run
 

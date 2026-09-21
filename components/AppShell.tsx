@@ -36,7 +36,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             />
             <span>
               <span className="block font-display text-xl leading-none">DanCorp</span>
-              <span className="mt-1 block text-xs text-muted">Low Earth orbit, same shift.</span>
+              <span className="mt-1 block text-xs text-muted">Short-haul orbital courier.</span>
             </span>
           </Link>
           <div className="flex items-center gap-2">
