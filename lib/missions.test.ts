@@ -14,6 +14,7 @@ import {
   formatWindow,
   formatZonedClock,
   legCountdown,
+  legTiming,
 } from "./format";
 import { PLACES } from "./places";
 import {
@@ -256,6 +257,13 @@ describe("formatWindow", () => {
     expect(formatRemaining(59 * 1000)).toBe("0:59");
     const airborne = resolveMissions(DEMO_INSTANT).find((mission) => mission.id === "DC-1050");
     expect(legCountdown(airborne!)).toBe("Lands in 40:00");
+    expect(legTiming(airborne!)).toBe("ETA 14:50 UTC");
+    const delivered = resolveMissions(DEMO_INSTANT).find((mission) => mission.id === "DC-1042");
+    expect(legTiming(delivered!)).toBe("10:48–11:26 UTC");
+    const scrubbed = resolveMissions(zonedTimeOnDate("2026-09-21", "16:20", SHIFT_ZONE)).find(
+      (mission) => mission.id === "DC-1064",
+    );
+    expect(legTiming(scrubbed!)).toBe("20:25 UTC");
     const held = resolveMissions(DEMO_INSTANT).find((mission) => mission.id === "DC-1056");
     expect(legCountdown(held!)).toBe("Liftoff in 38:00");
   });

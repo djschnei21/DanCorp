@@ -114,6 +114,21 @@ export function legSummary(mission: { distanceKm: number; speedKmh: number | nul
   return `${formatDistance(mission.distanceKm)} · ${formatSpeed(mission.speedKmh)}`;
 }
 
+export function legTiming(mission: {
+  status: MissionStatus;
+  windowStart: string;
+  liftoffAt: string | null;
+  dockAt: string | null;
+}): string {
+  if (mission.status === "in_flight" && mission.dockAt) {
+    return `ETA ${formatWindow(mission.dockAt)}`;
+  }
+  if (mission.liftoffAt && mission.dockAt) {
+    return `${formatWindow(mission.liftoffAt).slice(0, 5)}–${formatWindow(mission.dockAt)}`;
+  }
+  return formatWindow(mission.windowStart);
+}
+
 export function legCountdown(mission: {
   status: MissionStatus;
   asOf: string;

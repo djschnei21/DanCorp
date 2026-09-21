@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatMileCount, formatMphCount, formatRoute, formatWindow, legCountdown } from "@/lib/format";
+import { formatMileCount, formatMphCount, formatRoute, legTiming } from "@/lib/format";
 import type { BoardMission, MissionStatus } from "@/lib/types";
 import { LegReadout } from "./LegReadout";
 import { StatusBadge } from "./StatusBadge";
@@ -49,12 +49,11 @@ export function MissionTable({ missions }: { missions: BoardMission[] }) {
               </th>
               <th className="px-3 py-2 font-medium">Vehicle</th>
               <th className="px-3 py-2 font-medium">Cargo</th>
-              <th className="px-3 py-2 text-right font-medium">Window</th>
+              <th className="px-3 py-2 text-right font-medium">Timing</th>
               <th className="px-3 py-2 text-right font-medium">Status</th>
             </tr>
           </thead>
           {missions.map((mission) => {
-            const countdown = legCountdown(mission);
             const live = mission.status === "in_flight";
             return (
               <tbody key={mission.id} className="group">
@@ -80,18 +79,15 @@ export function MissionTable({ missions }: { missions: BoardMission[] }) {
                   </td>
                   <td className="whitespace-nowrap px-3 py-2">{mission.vehicleName}</td>
                   <td className="px-3 py-2">
-                    <div className="max-w-[10.5rem] truncate" title={mission.cargo}>
+                    <div className="max-w-[9.5rem] truncate" title={mission.cargo}>
                       {mission.cargo}
                     </div>
                   </td>
-                  <td className="whitespace-nowrap px-3 py-2 text-right tabular-nums">{formatWindow(mission.windowStart)}</td>
-                  <td className="whitespace-nowrap px-3 py-2">
-                    <div className="flex flex-col items-end gap-1">
-                      <StatusBadge status={mission.status} />
-                      {countdown ? (
-                        <span className="font-mono text-[11px] tabular-nums text-accent">{countdown}</span>
-                      ) : null}
-                    </div>
+                  <td className={`whitespace-nowrap px-2 py-2 text-right font-mono text-[13px] tabular-nums ${live ? "text-accent" : ""}`}>
+                    {legTiming(mission)}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-2 text-right">
+                    <StatusBadge status={mission.status} />
                   </td>
                 </tr>
                 {live ? (
@@ -131,7 +127,9 @@ export function MissionTable({ missions }: { missions: BoardMission[] }) {
               <p className="mt-1 text-sm text-muted">
                 {mission.customerName} · {mission.vehicleName}
               </p>
-              <p className="mt-1 text-sm tabular-nums text-muted">{formatWindow(mission.windowStart)}</p>
+              <p className={`mt-1 text-sm font-mono tabular-nums ${mission.status === "in_flight" ? "text-accent" : "text-muted"}`}>
+                {legTiming(mission)}
+              </p>
             </Link>
           </li>
         ))}
