@@ -21,6 +21,21 @@
   color-scheme: light;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --bg: #14120b;
+    --fg: #edecec;
+    --accent: #f54e00;
+    --card: #1b1913;
+    --card-01: #1d1b15;
+    --card-02: #201e18;
+    --card-03: #26241e;
+    --card-04: #2b2923;
+    --glow: color-mix(in srgb, var(--accent) 28%, transparent);
+    color-scheme: dark;
+  }
+}
+
 .dark {
   --bg: #14120b;
   --fg: #edecec;

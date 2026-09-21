@@ -1,41 +1,29 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { THEME_KEY } from "@/lib/theme";
-
-type Theme = "light" | "dark";
-
-const listeners = new Set<() => void>();
+import { THEME_KEY, resolveTheme, type ThemeChoice } from "@/lib/theme";
 
 function subscribe(listener: () => void) {
-  listeners.add(listener);
-  return () => listeners.delete(listener);
+  const media = window.matchMedia("(prefers-color-scheme: dark)");
+  media.addEventListener("change", listener);
+  document.addEventListener("dancorp-theme", listener);
+  return () => {
+    media.removeEventListener("change", listener);
+    document.removeEventListener("dancorp-theme", listener);
+  };
 }
 
-function getSnapshot(): Theme {
-  return document.documentElement.classList.contains("dark") ? "dark" : "light";
-}
-
-function emit() {
-  for (const listener of listeners) {
-    listener();
-  }
+function getSnapshot(): ThemeChoice {
+  return resolveTheme(localStorage.getItem(THEME_KEY), window.matchMedia("(prefers-color-scheme: dark)").matches);
 }
 
 export function ThemeToggle() {
   const theme = useSyncExternalStore(subscribe, getSnapshot, () => "light");
 
-  function toggle() {
-    const next: Theme = getSnapshot() === "dark" ? "light" : "dark";
-    document.documentElement.classList.toggle("dark", next === "dark");
-    localStorage.setItem(THEME_KEY, next);
-    emit();
-  }
-
   return (
     <button
+      id="theme-toggle"
       type="button"
-      onClick={toggle}
       suppressHydrationWarning
       className="rounded-full border border-card-04 bg-card px-3 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-fg hover:bg-card-01 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
