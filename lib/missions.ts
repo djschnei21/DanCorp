@@ -1,8 +1,10 @@
-import { customers, missions, vehicles } from "./data";
+import { customers, vehicles } from "./data";
+import { resolveMissions } from "./shift";
 import type {
   BoardMission,
   Customer,
   CustomerSummary,
+  FleetVehicle,
   KpiCounts,
   Mission,
   MissionDetail,
@@ -35,7 +37,7 @@ export function isOpenStatus(status: MissionStatus): boolean {
   return status !== "delivered" && status !== "scrubbed";
 }
 
-export function kpiCounts(source: Mission[] = missions): KpiCounts {
+export function kpiCounts(source: Mission[] = resolveMissions()): KpiCounts {
   return {
     onTime: source.filter(
       (mission) => mission.status === "delivered" || mission.status === "delayed",
@@ -46,8 +48,8 @@ export function kpiCounts(source: Mission[] = missions): KpiCounts {
   };
 }
 
-export function getBoard(source: Mission[] = missions): BoardMission[] {
-  return source
+export function getBoard(now: Date = new Date()): BoardMission[] {
+  return resolveMissions(now)
     .map((mission) => {
       const customer = requireCustomer(mission.customerId);
       const vehicle = requireVehicle(mission.vehicleId);
@@ -73,8 +75,8 @@ export function filterBoard(
   });
 }
 
-export function getMissionDetail(id: string): MissionDetail | null {
-  const row = getBoard().find((mission) => mission.id === id);
+export function getMissionDetail(id: string, now: Date = new Date()): MissionDetail | null {
+  const row = getBoard(now).find((mission) => mission.id === id);
   if (!row) {
     return null;
   }
@@ -85,11 +87,22 @@ export function getMissionDetail(id: string): MissionDetail | null {
   };
 }
 
-export function getFleet(): Vehicle[] {
-  return vehicles.map((vehicle) => ({ ...vehicle }));
+export function getFleet(now: Date = new Date()): FleetVehicle[] {
+  const missions = resolveMissions(now);
+  return vehicles.map((vehicle) => {
+    const next = missions
+      .filter((mission) => mission.vehicleId === vehicle.id && isOpenStatus(mission.status))
+      .sort((a, b) => a.windowStart.localeCompare(b.windowStart))[0];
+    return {
+      ...vehicle,
+      nextMissionId: next?.id ?? null,
+      nextStatus: next?.status ?? null,
+    };
+  });
 }
 
-export function getCustomers(): CustomerSummary[] {
+export function getCustomers(now: Date = new Date()): CustomerSummary[] {
+  const missions = resolveMissions(now);
   return customers.map((customer) => ({
     ...customer,
     openMissionCount: missions.filter(

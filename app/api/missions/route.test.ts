@@ -1,8 +1,18 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { DEMO_INSTANT } from "@/lib/shift";
 import { GET as getCustomers } from "../customers/route";
 import { GET as getFleet } from "../fleet/route";
 import { GET as getMission } from "./[id]/route";
 import { GET as getMissions } from "./route";
+
+beforeEach(() => {
+  vi.useFakeTimers();
+  vi.setSystemTime(DEMO_INSTANT);
+});
+
+afterEach(() => {
+  vi.useRealTimers();
+});
 
 describe("GET /api/missions", () => {
   it("returns the board in window order", async () => {
@@ -16,6 +26,8 @@ describe("GET /api/missions", () => {
     expect(body.missions[0].origin).toBe("Harbor Station");
     expect(body.missions[0].destination).toBe("Kourou");
     expect(body.missions[0].flown).toBe(1);
+    expect(body.missions[0].distanceKm).toBeGreaterThan(0);
+    expect(body.missions[0].speedKmh).toBeGreaterThan(0);
     const windows = body.missions.map((mission: { windowStart: string }) => mission.windowStart);
     expect(windows).toEqual([...windows].sort((a, b) => a.localeCompare(b)));
   });

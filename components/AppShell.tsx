@@ -4,6 +4,9 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { formatUtcClock, formatZonedClock } from "@/lib/format";
+import { SHIFT_ZONE } from "@/lib/shift";
+import { useShift } from "./ShiftProvider";
 import { ThemeToggle } from "./ThemeToggle";
 
 const links = [
@@ -21,6 +24,7 @@ function isActive(pathname: string, href: string): boolean {
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const now = new Date(useShift());
 
   return (
     <div className="min-h-screen text-fg">
@@ -39,6 +43,11 @@ export function AppShell({ children }: { children: ReactNode }) {
               <span className="mt-1 block text-xs text-muted">Short-haul orbital courier.</span>
             </span>
           </Link>
+          <p className="order-last w-full font-mono text-[11px] tabular-nums text-muted min-[860px]:order-none min-[860px]:w-auto">
+            {formatZonedClock(now, SHIFT_ZONE)}
+            <span className="mx-2 text-card-04">·</span>
+            {formatUtcClock(now)}
+          </p>
           <div className="flex items-center gap-2">
             <nav className="flex items-center gap-1 rounded-full border border-card-04 bg-card/80 p-1">
               {links.map((link) => {

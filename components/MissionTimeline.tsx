@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { formatRoute, formatWindow } from "@/lib/format";
 import type { BoardMission, MissionStatus } from "@/lib/types";
+import { LegReadout } from "./LegReadout";
 import { StatusBadge } from "./StatusBadge";
 
 function dot(status: MissionStatus): string {
@@ -25,7 +26,7 @@ export function MissionTimeline({ missions }: { missions: BoardMission[] }) {
     <div className="overflow-x-auto pb-1">
       <ol className="flex gap-3">
         {missions.map((mission) => (
-          <li key={mission.id} className="w-48 shrink-0">
+          <li key={mission.id} className="w-56 shrink-0">
             <Link
               href={`/missions/${mission.id}`}
               className={`block rounded-2xl border bg-card px-3 py-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
@@ -44,6 +45,9 @@ export function MissionTimeline({ missions }: { missions: BoardMission[] }) {
               <span className="mt-1 block truncate text-sm">{mission.cargo}</span>
               <span className="mt-1 block truncate text-xs text-muted">
                 {formatRoute(mission.origin, mission.destination)}
+              </span>
+              <span className="mt-2 block">
+                <LegReadout mission={mission} dense />
               </span>
               <span className="mt-3 block">
                 <StatusBadge status={mission.status} />

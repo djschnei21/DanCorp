@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { formatRoute, formatWindow } from "@/lib/format";
 import type { BoardMission, MissionStatus } from "@/lib/types";
+import { LegReadout } from "./LegReadout";
 import { StatusBadge } from "./StatusBadge";
 
 const rail: Record<MissionStatus, string> = {
@@ -59,6 +60,9 @@ export function MissionTable({ missions }: { missions: BoardMission[] }) {
                 <td className="px-4 py-3">
                   <div>{mission.customerName}</div>
                   <div className="text-muted">{formatRoute(mission.origin, mission.destination)}</div>
+                  <div className="mt-1">
+                    <LegReadout mission={mission} dense />
+                  </div>
                 </td>
                 <td className="px-4 py-3">{mission.vehicleName}</td>
                 <td className="px-4 py-3">{mission.cargo}</td>
@@ -88,6 +92,9 @@ export function MissionTable({ missions }: { missions: BoardMission[] }) {
               </div>
               <p className="mt-3 font-display text-xl leading-tight">{mission.cargo}</p>
               <p className="mt-2 text-sm">{formatRoute(mission.origin, mission.destination)}</p>
+              <div className="mt-2">
+                <LegReadout mission={mission} />
+              </div>
               <p className="mt-1 text-sm text-muted">
                 {mission.customerName} · {mission.vehicleName}
               </p>

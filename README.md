@@ -2,9 +2,9 @@
 
 `npm test` is red on purpose. Delayed missions are counted as on time. Fix `kpiCounts` in `lib/missions.ts`. Do not change the expected count.
 
-The suite should show one failure: `delayed missions are not on time`. Every other test passes. On time on the dispatch board reads 6 until that function counts delivered missions only.
+The suite should show one failure: `delayed missions are not on time`. Every other test passes. The test freezes the shift at 10:10 ET, when four flights are delivered and two are delayed, so on time reads 6 until `kpiCounts` counts delivered missions only.
 
-DanCorp is a short-haul orbital courier. Dispatch is the duty console for one UTC shift, 21 Sep 2026.
+DanCorp is a short-haul orbital courier. The console is the current Eastern day. Clock times are fixed in `data/day.json`.
 
 ## Run
 

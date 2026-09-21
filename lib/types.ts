@@ -45,6 +45,15 @@ export type Mission = {
   status: MissionStatus;
   delayMinutes: number;
   events: MissionEvent[];
+  distanceKm: number;
+  speedKmh: number | null;
+  asOf: string;
+  liftoffAt: string | null;
+  dockAt: string | null;
+};
+
+export type FleetVehicle = Vehicle & {
+  nextStatus: MissionStatus | null;
 };
 
 export type BoardMission = Mission & {

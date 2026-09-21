@@ -1,0 +1,619 @@
+{
+  "timezone": "America/New_York",
+  "missions": [
+    {
+      "id": "DC-1042",
+      "customerId": "helios-bio",
+      "vehicleId": "skiff-4",
+      "cargo": "Station blood samples",
+      "origin": "Harbor Station",
+      "destination": "Kourou",
+      "window": "06:40",
+      "delayMinutes": 0,
+      "events": [
+        {
+          "clock": "05:10",
+          "label": "Cargo received",
+          "kind": "standard"
+        },
+        {
+          "clock": "06:00",
+          "label": "Cargo at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "06:25",
+          "label": "Vehicle at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "06:32",
+          "label": "Cargo loaded",
+          "kind": "standard"
+        },
+        {
+          "clock": "06:40",
+          "label": "Window open",
+          "kind": "standard"
+        },
+        {
+          "clock": "06:48",
+          "label": "Liftoff",
+          "kind": "standard"
+        },
+        {
+          "clock": "07:26",
+          "label": "Docked",
+          "kind": "standard"
+        },
+        {
+          "clock": "07:34",
+          "label": "Cargo offloaded",
+          "kind": "standard"
+        }
+      ]
+    },
+    {
+      "id": "DC-1044",
+      "customerId": "northline-metals",
+      "vehicleId": "hopper-2",
+      "cargo": "Reflector blanks",
+      "origin": "Vandenberg",
+      "destination": "Harbor Station",
+      "window": "07:20",
+      "delayMinutes": 0,
+      "events": [
+        {
+          "clock": "05:50",
+          "label": "Cargo received",
+          "kind": "standard"
+        },
+        {
+          "clock": "06:40",
+          "label": "Cargo at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "07:05",
+          "label": "Vehicle at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "07:12",
+          "label": "Cargo loaded",
+          "kind": "standard"
+        },
+        {
+          "clock": "07:20",
+          "label": "Window open",
+          "kind": "standard"
+        },
+        {
+          "clock": "07:28",
+          "label": "Liftoff",
+          "kind": "standard"
+        },
+        {
+          "clock": "08:02",
+          "label": "Docked",
+          "kind": "standard"
+        },
+        {
+          "clock": "08:10",
+          "label": "Cargo offloaded",
+          "kind": "standard"
+        }
+      ]
+    },
+    {
+      "id": "DC-1046",
+      "customerId": "lumen-grid",
+      "vehicleId": "skiff-4",
+      "cargo": "Spare comms node",
+      "origin": "Wallops",
+      "destination": "Harbor Station",
+      "window": "08:02",
+      "delayMinutes": 0,
+      "events": [
+        {
+          "clock": "06:32",
+          "label": "Cargo received",
+          "kind": "standard"
+        },
+        {
+          "clock": "07:22",
+          "label": "Cargo at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "07:47",
+          "label": "Vehicle at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "07:54",
+          "label": "Cargo loaded",
+          "kind": "standard"
+        },
+        {
+          "clock": "08:02",
+          "label": "Window open",
+          "kind": "standard"
+        },
+        {
+          "clock": "08:10",
+          "label": "Liftoff",
+          "kind": "standard"
+        },
+        {
+          "clock": "08:52",
+          "label": "Docked",
+          "kind": "standard"
+        },
+        {
+          "clock": "09:00",
+          "label": "Cargo offloaded",
+          "kind": "standard"
+        }
+      ]
+    },
+    {
+      "id": "DC-1048",
+      "customerId": "kite-cable",
+      "vehicleId": "hopper-2",
+      "cargo": "Tether spool",
+      "origin": "Mojave",
+      "destination": "Harbor Station",
+      "window": "08:32",
+      "delayMinutes": 0,
+      "events": [
+        {
+          "clock": "07:02",
+          "label": "Cargo received",
+          "kind": "standard"
+        },
+        {
+          "clock": "07:52",
+          "label": "Cargo at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "08:17",
+          "label": "Vehicle at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "08:24",
+          "label": "Cargo loaded",
+          "kind": "standard"
+        },
+        {
+          "clock": "08:32",
+          "label": "Window open",
+          "kind": "standard"
+        },
+        {
+          "clock": "08:40",
+          "label": "Liftoff",
+          "kind": "standard"
+        },
+        {
+          "clock": "09:32",
+          "label": "Docked",
+          "kind": "standard"
+        },
+        {
+          "clock": "09:40",
+          "label": "Cargo offloaded",
+          "kind": "standard"
+        }
+      ]
+    },
+    {
+      "id": "DC-1050",
+      "customerId": "helios-bio",
+      "vehicleId": "skiff-4",
+      "cargo": "Cold-stow cultures",
+      "origin": "Kourou",
+      "destination": "Harbor Station",
+      "window": "09:20",
+      "delayMinutes": 0,
+      "events": [
+        {
+          "clock": "07:50",
+          "label": "Cargo received",
+          "kind": "standard"
+        },
+        {
+          "clock": "08:40",
+          "label": "Cargo at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "09:05",
+          "label": "Vehicle at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "09:12",
+          "label": "Cargo loaded",
+          "kind": "standard"
+        },
+        {
+          "clock": "09:20",
+          "label": "Window open",
+          "kind": "standard"
+        },
+        {
+          "clock": "09:28",
+          "label": "Liftoff",
+          "kind": "standard"
+        },
+        {
+          "clock": "10:50",
+          "label": "Docked",
+          "kind": "standard"
+        },
+        {
+          "clock": "10:58",
+          "label": "Cargo offloaded",
+          "kind": "standard"
+        }
+      ]
+    },
+    {
+      "id": "DC-1058",
+      "customerId": "paperplane",
+      "vehicleId": "lark-1",
+      "cargo": "Film camera",
+      "origin": "Boca Chica",
+      "destination": "Harbor Station",
+      "window": "09:50",
+      "delayMinutes": 95,
+      "events": [
+        {
+          "clock": "08:20",
+          "label": "Cargo received",
+          "kind": "standard"
+        },
+        {
+          "clock": "09:10",
+          "label": "Cargo at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "09:35",
+          "label": "Vehicle at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "09:42",
+          "label": "Cargo loaded",
+          "kind": "standard"
+        },
+        {
+          "clock": "09:50",
+          "label": "Window open",
+          "kind": "standard"
+        },
+        {
+          "clock": "10:02",
+          "label": "Vehicle hold",
+          "kind": "exception"
+        },
+        {
+          "clock": "11:33",
+          "label": "Liftoff",
+          "kind": "standard"
+        },
+        {
+          "clock": "12:20",
+          "label": "Docked",
+          "kind": "standard"
+        },
+        {
+          "clock": "12:28",
+          "label": "Cargo offloaded",
+          "kind": "standard"
+        }
+      ]
+    },
+    {
+      "id": "DC-1056",
+      "customerId": "kite-cable",
+      "vehicleId": "hopper-2",
+      "cargo": "Winch housing",
+      "origin": "Mojave",
+      "destination": "Harbor Station",
+      "window": "10:00",
+      "delayMinutes": 40,
+      "events": [
+        {
+          "clock": "08:30",
+          "label": "Cargo received",
+          "kind": "standard"
+        },
+        {
+          "clock": "09:20",
+          "label": "Cargo at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "09:45",
+          "label": "Vehicle at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "09:52",
+          "label": "Cargo loaded",
+          "kind": "standard"
+        },
+        {
+          "clock": "10:00",
+          "label": "Window open",
+          "kind": "standard"
+        },
+        {
+          "clock": "10:06",
+          "label": "Weather hold",
+          "kind": "exception"
+        },
+        {
+          "clock": "10:48",
+          "label": "Liftoff",
+          "kind": "standard"
+        },
+        {
+          "clock": "11:51",
+          "label": "Docked",
+          "kind": "standard"
+        },
+        {
+          "clock": "11:59",
+          "label": "Cargo offloaded",
+          "kind": "standard"
+        }
+      ]
+    },
+    {
+      "id": "DC-1054",
+      "customerId": "lumen-grid",
+      "vehicleId": "skiff-4",
+      "cargo": "Relay pallet",
+      "origin": "Wallops",
+      "destination": "Harbor Station",
+      "window": "11:15",
+      "delayMinutes": 0,
+      "events": [
+        {
+          "clock": "09:45",
+          "label": "Cargo received",
+          "kind": "standard"
+        },
+        {
+          "clock": "10:35",
+          "label": "Cargo at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "11:00",
+          "label": "Vehicle at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "11:07",
+          "label": "Cargo loaded",
+          "kind": "standard"
+        },
+        {
+          "clock": "11:15",
+          "label": "Window open",
+          "kind": "standard"
+        },
+        {
+          "clock": "11:23",
+          "label": "Liftoff",
+          "kind": "standard"
+        },
+        {
+          "clock": "13:08",
+          "label": "Docked",
+          "kind": "standard"
+        },
+        {
+          "clock": "13:16",
+          "label": "Cargo offloaded",
+          "kind": "standard"
+        }
+      ]
+    },
+    {
+      "id": "DC-1052",
+      "customerId": "northline-metals",
+      "vehicleId": "hopper-2",
+      "cargo": "Ingot coupons",
+      "origin": "Vandenberg",
+      "destination": "Polar Yard",
+      "window": "12:32",
+      "delayMinutes": 0,
+      "events": [
+        {
+          "clock": "11:02",
+          "label": "Cargo received",
+          "kind": "standard"
+        },
+        {
+          "clock": "11:52",
+          "label": "Cargo at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "12:17",
+          "label": "Vehicle at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "12:24",
+          "label": "Cargo loaded",
+          "kind": "standard"
+        },
+        {
+          "clock": "12:32",
+          "label": "Window open",
+          "kind": "standard"
+        },
+        {
+          "clock": "12:40",
+          "label": "Liftoff",
+          "kind": "standard"
+        },
+        {
+          "clock": "14:30",
+          "label": "Docked",
+          "kind": "standard"
+        },
+        {
+          "clock": "14:38",
+          "label": "Cargo offloaded",
+          "kind": "standard"
+        }
+      ]
+    },
+    {
+      "id": "DC-1060",
+      "customerId": "brine-works",
+      "vehicleId": "lark-1",
+      "cargo": "Water recycler cartridge",
+      "origin": "Polar Yard",
+      "destination": "Kodiak",
+      "window": "14:02",
+      "delayMinutes": 0,
+      "events": [
+        {
+          "clock": "12:32",
+          "label": "Cargo received",
+          "kind": "standard"
+        },
+        {
+          "clock": "13:22",
+          "label": "Cargo at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "13:47",
+          "label": "Vehicle at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "13:54",
+          "label": "Cargo loaded",
+          "kind": "standard"
+        },
+        {
+          "clock": "14:02",
+          "label": "Window open",
+          "kind": "standard"
+        },
+        {
+          "clock": "14:10",
+          "label": "Liftoff",
+          "kind": "standard"
+        },
+        {
+          "clock": "15:50",
+          "label": "Docked",
+          "kind": "standard"
+        },
+        {
+          "clock": "15:58",
+          "label": "Cargo offloaded",
+          "kind": "standard"
+        }
+      ]
+    },
+    {
+      "id": "DC-1062",
+      "customerId": "brine-works",
+      "vehicleId": "hopper-2",
+      "cargo": "Brine filter stack",
+      "origin": "Kodiak",
+      "destination": "Polar Yard",
+      "window": "15:32",
+      "delayMinutes": 0,
+      "events": [
+        {
+          "clock": "14:02",
+          "label": "Cargo received",
+          "kind": "standard"
+        },
+        {
+          "clock": "14:52",
+          "label": "Cargo at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "15:17",
+          "label": "Vehicle at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "15:24",
+          "label": "Cargo loaded",
+          "kind": "standard"
+        },
+        {
+          "clock": "15:32",
+          "label": "Window open",
+          "kind": "standard"
+        },
+        {
+          "clock": "15:40",
+          "label": "Liftoff",
+          "kind": "standard"
+        },
+        {
+          "clock": "17:10",
+          "label": "Docked",
+          "kind": "standard"
+        },
+        {
+          "clock": "17:18",
+          "label": "Cargo offloaded",
+          "kind": "standard"
+        }
+      ]
+    },
+    {
+      "id": "DC-1064",
+      "customerId": "paperplane",
+      "vehicleId": "skiff-4",
+      "cargo": "Second camera body",
+      "origin": "Boca Chica",
+      "destination": "Harbor Station",
+      "window": "16:25",
+      "delayMinutes": 0,
+      "events": [
+        {
+          "clock": "14:55",
+          "label": "Cargo received",
+          "kind": "standard"
+        },
+        {
+          "clock": "15:45",
+          "label": "Cargo at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "16:10",
+          "label": "Vehicle at pad",
+          "kind": "standard"
+        },
+        {
+          "clock": "16:15",
+          "label": "Loading mishap",
+          "kind": "exception"
+        }
+      ]
+    }
+  ]
+}

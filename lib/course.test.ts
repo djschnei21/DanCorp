@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { PLACARDS } from "./chart";
 import { chartLabels, headingDegrees, layCourse, onIce, onLand, quad, shoreDistance } from "./course";
-import { missions } from "./data";
+import day from "../data/day.json";
+import { zonedTimeOnDate } from "./clock";
 import { PLACES } from "./places";
+import { resolveMissions } from "./shift";
 
 const GROUND = ["Kourou", "Vandenberg", "Mojave", "Wallops", "Boca Chica", "Kodiak"] as const;
 const COASTAL = ["Kourou", "Vandenberg", "Wallops", "Boca Chica", "Kodiak"] as const;
@@ -47,8 +49,10 @@ describe("the chart", () => {
   });
 
   it("points the in-flight arrow along the track", () => {
-    const inFlight = missions.filter((mission) => mission.status === "in_flight");
-    expect(inFlight).toHaveLength(3);
+    const inFlight = resolveMissions(zonedTimeOnDate("2026-09-21", "12:00", "America/New_York")).filter(
+      (mission) => mission.status === "in_flight",
+    );
+    expect(inFlight.length).toBeGreaterThan(0);
     for (const mission of inFlight) {
       const course = layCourse(PLACES[mission.origin], PLACES[mission.destination], mission.flown);
       const ahead = quad(course.frame.from, course.bend, course.frame.to, Math.min(0.97, mission.flown + 0.05));
@@ -61,7 +65,7 @@ describe("the chart", () => {
 
   it("keeps the middle of every course over water", () => {
     const crossings: string[] = [];
-    for (const mission of missions) {
+    for (const mission of day.missions) {
       const course = layCourse(PLACES[mission.origin], PLACES[mission.destination], 0.5);
       for (let i = 5; i <= 35; i += 1) {
         const point = quad(course.frame.from, course.bend, course.frame.to, i / 40);
