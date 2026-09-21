@@ -30,6 +30,7 @@ export type Vehicle = {
 export type MissionEvent = {
   at: string;
   label: string;
+  kind: "standard" | "exception";
 };
 
 export type Mission = {

@@ -10,43 +10,46 @@ function shift(windowStart: string, minutes: number): string {
   return new Date(Date.parse(windowStart) + minutes * 60_000).toISOString();
 }
 
-function eventsFor(status: MissionStatus, windowStart: string): MissionEvent[] {
-  if (status === "delivered") {
-    return [
-      { at: shift(windowStart, -30), label: "Cargo at pad" },
-      { at: shift(windowStart, 0), label: "Window open" },
-      { at: shift(windowStart, 8), label: "Liftoff" },
-      { at: shift(windowStart, 41), label: "Berthing confirmed" },
-    ];
+// One script for every flight. A mission keeps the prefix it has reached.
+// An exception is an extra line; it does not rename a standard callout.
+const STANDARD_EVENTS: { minutes: number; label: string }[] = [
+  { minutes: -90, label: "Cargo received" },
+  { minutes: -40, label: "Cargo at pad" },
+  { minutes: -15, label: "Vehicle at pad" },
+  { minutes: 0, label: "Window open" },
+  { minutes: 8, label: "Liftoff" },
+  { minutes: 41, label: "Berthing confirmed" },
+];
+
+const REACHED: Record<MissionStatus, number> = {
+  queued: 3,
+  scrubbed: 3,
+  delayed: 4,
+  in_flight: 5,
+  delivered: 6,
+};
+
+const EXCEPTIONS: Record<string, { minutes: number; label: string }> = {
+  "DC-1056": { minutes: 6, label: "Weather hold" },
+  "DC-1058": { minutes: 12, label: "Vehicle hold" },
+  "DC-1064": { minutes: -10, label: "Loading mishap" },
+};
+
+function eventsFor(id: string, status: MissionStatus, windowStart: string): MissionEvent[] {
+  const events: MissionEvent[] = STANDARD_EVENTS.slice(0, REACHED[status]).map((event) => ({
+    at: shift(windowStart, event.minutes),
+    label: event.label,
+    kind: "standard",
+  }));
+  const exception = EXCEPTIONS[id];
+  if (exception) {
+    events.push({
+      at: shift(windowStart, exception.minutes),
+      label: exception.label,
+      kind: "exception",
+    });
   }
-  if (status === "in_flight") {
-    return [
-      { at: shift(windowStart, -25), label: "Cargo at pad" },
-      { at: shift(windowStart, 0), label: "Window open" },
-      { at: shift(windowStart, 7), label: "Liftoff" },
-      { at: shift(windowStart, 18), label: "Coasting" },
-    ];
-  }
-  if (status === "delayed") {
-    return [
-      { at: shift(windowStart, -40), label: "Cargo at pad" },
-      { at: shift(windowStart, -15), label: "Hold called" },
-      { at: shift(windowStart, 0), label: "Window open" },
-      { at: shift(windowStart, 20), label: "Still on the pad" },
-    ];
-  }
-  if (status === "scrubbed") {
-    return [
-      { at: shift(windowStart, -50), label: "Cargo at pad" },
-      { at: shift(windowStart, -20), label: "Range hold" },
-      { at: shift(windowStart, 0), label: "Window scrubbed" },
-    ];
-  }
-  return [
-    { at: shift(windowStart, -90), label: "Cargo received" },
-    { at: shift(windowStart, -40), label: "Stacked" },
-    { at: shift(windowStart, 0), label: "Waiting on window" },
-  ];
+  return events.sort((a, b) => a.at.localeCompare(b.at));
 }
 
 function mission(
@@ -55,7 +58,7 @@ function mission(
   return {
     delayMinutes: 0,
     ...input,
-    events: eventsFor(input.status, input.windowStart),
+    events: eventsFor(input.id, input.status, input.windowStart),
   };
 }
 

@@ -101,10 +101,14 @@ export default async function MissionPage({ params }: { params: Promise<{ id: st
         <h2 className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted">Events</h2>
         <ol className="mt-3 overflow-hidden rounded-3xl border border-card-04 bg-card">
           {mission.events.map((event) => (
-            <li key={event.at} className="flex gap-4 border-t border-card-04 px-5 py-3 text-sm first:border-t-0">
-              <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-accent" />
+            <li key={`${event.at}-${event.label}`} className="flex gap-4 border-t border-card-04 px-5 py-3 text-sm first:border-t-0">
+              <span
+                className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${
+                  event.kind === "exception" ? "bg-accent shadow-[0_0_10px_#f54e00]" : "bg-fg/35"
+                }`}
+              />
               <span className="w-24 shrink-0 tabular-nums text-muted">{formatWindow(event.at)}</span>
-              <span>{event.label}</span>
+              <span className={event.kind === "exception" ? "text-accent" : undefined}>{event.label}</span>
             </li>
           ))}
         </ol>

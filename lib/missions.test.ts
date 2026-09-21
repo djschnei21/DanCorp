@@ -15,7 +15,7 @@ describe("the shift", () => {
     expect(vehicles).toHaveLength(4);
     expect(missions).toHaveLength(12);
     expect(missions.every((mission) => mission.windowStart.startsWith("2026-09-21"))).toBe(true);
-    expect(missions.every((mission) => mission.events.length >= 3 && mission.events.length <= 5)).toBe(
+    expect(missions.every((mission) => mission.events.length >= 3 && mission.events.length <= 6)).toBe(
       true,
     );
   });
@@ -53,6 +53,48 @@ describe("the shift", () => {
     expect(rows.find((customer) => customer.id === "brine-works")?.openMissionCount).toBe(2);
     expect(rows.find((customer) => customer.id === "paperplane")?.openMissionCount).toBe(1);
     expect(vehicles.find((vehicle) => vehicle.id === "mule-9")?.nextMissionId).toBeNull();
+  });
+
+  it("uses one event script, plus an exception when the flight leaves it", () => {
+    const script = [
+      "Cargo received",
+      "Cargo at pad",
+      "Vehicle at pad",
+      "Window open",
+      "Liftoff",
+      "Berthing confirmed",
+    ];
+    for (const mission of missions) {
+      const labels = mission.events.map((event) => event.label);
+      const standard = labels.filter((label) => script.includes(label));
+      expect(standard).toEqual(script.slice(0, standard.length));
+      const times = mission.events.map((event) => event.at);
+      expect(times).toEqual([...times].sort((a, b) => a.localeCompare(b)));
+    }
+    const labelsFor = (id: string) => missions.find((mission) => mission.id === id)?.events.map((event) => event.label);
+    expect(labelsFor("DC-1042")).toEqual(script);
+    expect(labelsFor("DC-1050")).toEqual(script.slice(0, 5));
+    expect(labelsFor("DC-1060")).toEqual(script.slice(0, 3));
+    expect(labelsFor("DC-1062")).toEqual(script.slice(0, 3));
+    expect(labelsFor("DC-1056")).toEqual([
+      "Cargo received",
+      "Cargo at pad",
+      "Vehicle at pad",
+      "Window open",
+      "Weather hold",
+    ]);
+    expect(labelsFor("DC-1058")).toEqual([
+      "Cargo received",
+      "Cargo at pad",
+      "Vehicle at pad",
+      "Window open",
+      "Vehicle hold",
+    ]);
+    expect(labelsFor("DC-1064")).toEqual(["Cargo received", "Cargo at pad", "Vehicle at pad", "Loading mishap"]);
+    const exceptions = missions.flatMap((mission) =>
+      mission.events.filter((event) => event.kind === "exception").map((event) => `${mission.id} ${event.label}`),
+    );
+    expect(exceptions).toEqual(["DC-1056 Weather hold", "DC-1058 Vehicle hold", "DC-1064 Loading mishap"]);
   });
 
   it("counts in flight, delayed, and scrubbed", () => {
