@@ -38,6 +38,8 @@ export type Mission = {
   customerId: string;
   vehicleId: string;
   cargo: string;
+  origin: string;
+  destination: string;
   windowStart: string;
   status: MissionStatus;
   delayMinutes: number;

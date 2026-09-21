@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatWindow } from "@/lib/format";
+import { formatRoute, formatWindow } from "@/lib/format";
 import type { BoardMission, MissionStatus } from "@/lib/types";
 import { StatusBadge } from "./StatusBadge";
 
@@ -42,6 +42,9 @@ export function MissionTimeline({ missions }: { missions: BoardMission[] }) {
               </span>
               <span className="mt-3 block font-mono text-xs text-muted">{mission.id}</span>
               <span className="mt-1 block truncate text-sm">{mission.cargo}</span>
+              <span className="mt-1 block truncate text-xs text-muted">
+                {formatRoute(mission.origin, mission.destination)}
+              </span>
               <span className="mt-3 block">
                 <StatusBadge status={mission.status} />
               </span>

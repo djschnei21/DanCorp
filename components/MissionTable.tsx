@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatWindow } from "@/lib/format";
+import { formatRoute, formatWindow } from "@/lib/format";
 import type { BoardMission, MissionStatus } from "@/lib/types";
 import { StatusBadge } from "./StatusBadge";
 
@@ -58,7 +58,7 @@ export function MissionTable({ missions }: { missions: BoardMission[] }) {
                 </td>
                 <td className="px-4 py-3">
                   <div>{mission.customerName}</div>
-                  <div className="text-muted">{mission.site}</div>
+                  <div className="text-muted">{formatRoute(mission.origin, mission.destination)}</div>
                 </td>
                 <td className="px-4 py-3">{mission.vehicleName}</td>
                 <td className="px-4 py-3">{mission.cargo}</td>
@@ -87,7 +87,8 @@ export function MissionTable({ missions }: { missions: BoardMission[] }) {
                 <StatusBadge status={mission.status} />
               </div>
               <p className="mt-3 font-display text-xl leading-tight">{mission.cargo}</p>
-              <p className="mt-2 text-sm text-muted">
+              <p className="mt-2 text-sm">{formatRoute(mission.origin, mission.destination)}</p>
+              <p className="mt-1 text-sm text-muted">
                 {mission.customerName} · {mission.vehicleName}
               </p>
               <p className="mt-1 text-sm tabular-nums text-muted">{formatWindow(mission.windowStart)}</p>

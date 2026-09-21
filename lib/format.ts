@@ -19,6 +19,10 @@ export const CONTRACT_LABEL: Record<Contract, string> = {
   spot: "Spot",
 };
 
+export function formatRoute(origin: string, destination: string): string {
+  return `${origin} → ${destination}`;
+}
+
 export function formatWindow(iso: string): string {
   const date = new Date(iso);
   const hours = String(date.getUTCHours()).padStart(2, "0");

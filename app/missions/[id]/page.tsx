@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { StatusBadge } from "@/components/StatusBadge";
-import { CONTRACT_LABEL, READINESS_LABEL, formatWindow } from "@/lib/format";
+import { CONTRACT_LABEL, READINESS_LABEL, formatRoute, formatWindow } from "@/lib/format";
 import { getMissionDetail } from "@/lib/missions";
 import { vehiclePortrait } from "@/lib/portraits";
 
@@ -62,6 +62,7 @@ export default async function MissionPage({ params }: { params: Promise<{ id: st
               <StatusBadge status={mission.status} />
             </div>
             <p className="mt-2 text-lg text-[#edecec]/85">{mission.cargo}</p>
+            <p className="mt-1 text-sm text-[#edecec]/75">{formatRoute(mission.origin, mission.destination)}</p>
           </div>
           {mission.status === "delayed" ? (
             <p className="font-display text-5xl leading-none text-[#f54e00] min-[720px]:text-6xl">
@@ -87,6 +88,12 @@ export default async function MissionPage({ params }: { params: Promise<{ id: st
           <p className="text-sm text-muted">
             {mission.vehicle.pad} · {READINESS_LABEL[mission.vehicle.readiness]}
           </p>
+        </Fact>
+        <Fact label="Origin">
+          <p className="font-display text-2xl">{mission.origin}</p>
+        </Fact>
+        <Fact label="Destination">
+          <p className="font-display text-2xl">{mission.destination}</p>
         </Fact>
         <Fact label="Window">
           <p className="font-display text-2xl tabular-nums">{formatWindow(mission.windowStart)}</p>

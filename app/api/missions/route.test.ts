@@ -13,6 +13,8 @@ describe("GET /api/missions", () => {
     expect(body.missions[0].id).toBe("DC-1042");
     expect(body.missions[0].customerName).toBe("Helios Bio");
     expect(body.missions[0].vehicleName).toBe("Skiff-4");
+    expect(body.missions[0].origin).toBe("Harbor Station");
+    expect(body.missions[0].destination).toBe("Kourou");
     const windows = body.missions.map((mission: { windowStart: string }) => mission.windowStart);
     expect(windows).toEqual([...windows].sort((a, b) => a.localeCompare(b)));
   });
@@ -29,6 +31,8 @@ describe("GET /api/missions/:id", () => {
     expect(body.mission.delayMinutes).toBe(40);
     expect(body.mission.customer.name).toBe("Kite & Cable");
     expect(body.mission.vehicle.name).toBe("Hopper-2");
+    expect(body.mission.origin).toBe("Mojave");
+    expect(body.mission.destination).toBe("Harbor Station");
     expect(body.mission.events.length).toBeGreaterThanOrEqual(3);
   });
 

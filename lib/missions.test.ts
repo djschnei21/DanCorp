@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { customers, missions, vehicles } from "./data";
-import { formatWindow } from "./format";
+import { formatRoute, formatWindow } from "./format";
 import {
   filterBoard,
   getBoard,
@@ -27,6 +27,29 @@ describe("the shift", () => {
     expect(board[0]?.id).toBe("DC-1042");
     expect(board[0]?.customerName).toBe("Helios Bio");
     expect(board[0]?.vehicleName).toBe("Skiff-4");
+    expect(board[0]?.origin).toBe("Harbor Station");
+    expect(board[0]?.destination).toBe("Kourou");
+  });
+
+  it("gives every mission an origin and a destination", () => {
+    const board = getBoard();
+    expect(
+      board.every(
+        (mission) =>
+          mission.origin.length > 0 &&
+          mission.destination.length > 0 &&
+          mission.origin !== mission.destination &&
+          (mission.origin === mission.site || mission.destination === mission.site),
+      ),
+    ).toBe(true);
+    expect(board.find((mission) => mission.id === "DC-1052")).toMatchObject({
+      origin: "Vandenberg",
+      destination: "Polar Yard",
+    });
+    expect(board.find((mission) => mission.id === "DC-1060")).toMatchObject({
+      origin: "Polar Yard",
+      destination: "Kodiak",
+    });
   });
 
   it("returns null for an unknown mission", () => {
@@ -118,5 +141,9 @@ describe("the shift", () => {
 describe("formatWindow", () => {
   it("prints UTC hours and minutes", () => {
     expect(formatWindow("2026-09-21T06:10:00.000Z")).toBe("06:10 UTC");
+  });
+
+  it("prints a route from origin to destination", () => {
+    expect(formatRoute("Mojave", "Harbor Station")).toBe("Mojave → Harbor Station");
   });
 });
