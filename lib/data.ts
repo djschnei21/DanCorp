@@ -16,17 +16,19 @@ const STANDARD_EVENTS: { minutes: number; label: string }[] = [
   { minutes: -90, label: "Cargo received" },
   { minutes: -40, label: "Cargo at pad" },
   { minutes: -15, label: "Vehicle at pad" },
+  { minutes: -8, label: "Cargo loaded" },
   { minutes: 0, label: "Window open" },
   { minutes: 8, label: "Liftoff" },
-  { minutes: 41, label: "Berthing confirmed" },
+  { minutes: 36, label: "Docked" },
+  { minutes: 44, label: "Cargo offloaded" },
 ];
 
 const REACHED: Record<MissionStatus, number> = {
-  queued: 3,
+  queued: 4,
   scrubbed: 3,
-  delayed: 4,
-  in_flight: 5,
-  delivered: 6,
+  delayed: 5,
+  in_flight: 6,
+  delivered: 8,
 };
 
 const EXCEPTIONS: Record<string, { minutes: number; label: string }> = {

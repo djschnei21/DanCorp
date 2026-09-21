@@ -15,7 +15,7 @@ describe("the shift", () => {
     expect(vehicles).toHaveLength(4);
     expect(missions).toHaveLength(12);
     expect(missions.every((mission) => mission.windowStart.startsWith("2026-09-21"))).toBe(true);
-    expect(missions.every((mission) => mission.events.length >= 3 && mission.events.length <= 6)).toBe(
+    expect(missions.every((mission) => mission.events.length >= 3 && mission.events.length <= 8)).toBe(
       true,
     );
   });
@@ -60,9 +60,11 @@ describe("the shift", () => {
       "Cargo received",
       "Cargo at pad",
       "Vehicle at pad",
+      "Cargo loaded",
       "Window open",
       "Liftoff",
-      "Berthing confirmed",
+      "Docked",
+      "Cargo offloaded",
     ];
     for (const mission of missions) {
       const labels = mission.events.map((event) => event.label);
@@ -73,13 +75,14 @@ describe("the shift", () => {
     }
     const labelsFor = (id: string) => missions.find((mission) => mission.id === id)?.events.map((event) => event.label);
     expect(labelsFor("DC-1042")).toEqual(script);
-    expect(labelsFor("DC-1050")).toEqual(script.slice(0, 5));
-    expect(labelsFor("DC-1060")).toEqual(script.slice(0, 3));
-    expect(labelsFor("DC-1062")).toEqual(script.slice(0, 3));
+    expect(labelsFor("DC-1050")).toEqual(script.slice(0, 6));
+    expect(labelsFor("DC-1060")).toEqual(script.slice(0, 4));
+    expect(labelsFor("DC-1062")).toEqual(script.slice(0, 4));
     expect(labelsFor("DC-1056")).toEqual([
       "Cargo received",
       "Cargo at pad",
       "Vehicle at pad",
+      "Cargo loaded",
       "Window open",
       "Weather hold",
     ]);
@@ -87,6 +90,7 @@ describe("the shift", () => {
       "Cargo received",
       "Cargo at pad",
       "Vehicle at pad",
+      "Cargo loaded",
       "Window open",
       "Vehicle hold",
     ]);
