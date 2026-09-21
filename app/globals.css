@@ -1,4 +1,11 @@
 @import "tailwindcss";
+@import "@fontsource/syne/latin-500.css";
+@import "@fontsource/syne/latin-700.css";
+@import "@fontsource/manrope/latin-400.css";
+@import "@fontsource/manrope/latin-500.css";
+@import "@fontsource/manrope/latin-600.css";
+@import "@fontsource/ibm-plex-mono/latin-400.css";
+@import "@fontsource/ibm-plex-mono/latin-500.css";
 
 :root {
   --bg: #f7f7f4;
@@ -10,6 +17,7 @@
   --card-03: #e6e5e0;
   --card-04: #e1e0db;
   --muted: color-mix(in srgb, var(--fg) 60%, transparent);
+  --glow: color-mix(in srgb, var(--accent) 16%, transparent);
   color-scheme: light;
 }
 
@@ -22,12 +30,14 @@
   --card-02: #201e18;
   --card-03: #26241e;
   --card-04: #2b2923;
+  --glow: color-mix(in srgb, var(--accent) 28%, transparent);
   color-scheme: dark;
 }
 
 @theme inline {
-  --font-sans: ui-sans-serif, system-ui, sans-serif;
-  --font-mono: ui-monospace, monospace;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Syne", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
   --color-bg: var(--bg);
   --color-fg: var(--fg);
   --color-accent: var(--accent);
@@ -39,8 +49,26 @@
   --color-muted: var(--muted);
 }
 
-body {
+html {
   background: var(--bg);
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(880px 420px at -8% -12%, var(--glow), transparent 62%),
+    radial-gradient(640px 320px at 110% -8%, color-mix(in srgb, var(--fg) 7%, transparent), transparent 55%),
+    var(--bg);
   color: var(--fg);
   font-family: var(--font-sans);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 32%, transparent);
+  color: var(--fg);
+}
+
+.font-display {
+  font-weight: 700;
+  letter-spacing: -0.03em;
 }

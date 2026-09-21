@@ -56,23 +56,27 @@ export function MissionBoard({
   }
 
   return (
-    <div className="space-y-4">
-      <MissionFilters
-        customers={customers}
-        status={status}
-        customerId={customerId}
-        onStatus={(value) => {
-          setStatus(value);
-          replace(value, customerId);
-        }}
-        onCustomer={(value) => {
-          setCustomerId(value);
-          replace(status, value);
-        }}
-      />
-      {filtered.length > 0 ? (
-        <p className="text-sm text-muted">{missionCountLabel(filtered.length)}</p>
-      ) : null}
+    <div className="space-y-5">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <MissionFilters
+          customers={customers}
+          status={status}
+          customerId={customerId}
+          onStatus={(value) => {
+            setStatus(value);
+            replace(value, customerId);
+          }}
+          onCustomer={(value) => {
+            setCustomerId(value);
+            replace(status, value);
+          }}
+        />
+        {filtered.length > 0 ? (
+          <p className="pb-2 font-mono text-xs uppercase tracking-[0.16em] text-muted">
+            {missionCountLabel(filtered.length)}
+          </p>
+        ) : null}
+      </div>
       <MissionTimeline missions={filtered} />
       <MissionTable missions={filtered} />
     </div>

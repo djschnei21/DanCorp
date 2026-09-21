@@ -2,7 +2,7 @@ import { STATUS_LABEL } from "@/lib/format";
 import { MISSION_STATUSES, type CustomerSummary } from "@/lib/types";
 
 const selectClass =
-  "rounded-md border border-card-04 bg-card px-2 py-1.5 text-sm text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+  "rounded-full border border-card-04 bg-card px-3 py-2 text-sm text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
 export function MissionFilters({
   customers,
@@ -18,14 +18,10 @@ export function MissionFilters({
   onCustomer: (customerId: string) => void;
 }) {
   return (
-    <div className="flex flex-wrap gap-4">
-      <label className="flex flex-col gap-1 text-sm text-muted">
+    <div className="flex flex-wrap items-end gap-3">
+      <label className="flex flex-col gap-1.5 text-[11px] font-medium uppercase tracking-[0.16em] text-muted">
         Status
-        <select
-          className={selectClass}
-          value={status}
-          onChange={(event) => onStatus(event.target.value)}
-        >
+        <select className={selectClass} value={status} onChange={(event) => onStatus(event.target.value)}>
           <option value="all">All</option>
           {MISSION_STATUSES.map((item) => (
             <option key={item} value={item}>
@@ -34,7 +30,7 @@ export function MissionFilters({
           ))}
         </select>
       </label>
-      <label className="flex flex-col gap-1 text-sm text-muted">
+      <label className="flex flex-col gap-1.5 text-[11px] font-medium uppercase tracking-[0.16em] text-muted">
         Customer
         <select
           className={selectClass}
