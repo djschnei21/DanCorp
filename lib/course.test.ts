@@ -6,30 +6,16 @@ import { zonedTimeOnDate } from "./clock";
 import { PLACES } from "./places";
 import { resolveMissions } from "./shift";
 
-const GROUND = ["Kourou", "Vandenberg", "Mojave", "Wallops", "Boca Chica", "Kodiak"] as const;
-const COASTAL = ["Kourou", "Vandenberg", "Wallops", "Boca Chica", "Kodiak"] as const;
+const GROUND = ["Boca Chica", "Vandenberg", "Wallops", "Keel", "Gale", "Harrow"] as const;
 
 describe("the chart", () => {
-  it("puts ground sites on land and stations in open water", () => {
+  it("puts every pad on a shore", () => {
     for (const name of GROUND) {
       const place = PLACES[name];
       expect(onLand(place.lon, place.lat), name).toBe(true);
       expect(onIce(place.lon, place.lat), name).toBe(false);
-    }
-    for (const name of ["Harbor Station", "Polar Yard"] as const) {
-      const place = PLACES[name];
-      expect(onLand(place.lon, place.lat), name).toBe(false);
-      expect(onIce(place.lon, place.lat), name).toBe(false);
-      expect(shoreDistance(place.lon, place.lat), name).toBeGreaterThan(4);
-    }
-  });
-
-  it("keeps the pads on the shore and Mojave inland", () => {
-    for (const name of COASTAL) {
-      const place = PLACES[name];
       expect(shoreDistance(place.lon, place.lat), name).toBeLessThan(1.8);
     }
-    expect(shoreDistance(PLACES.Mojave.lon, PLACES.Mojave.lat)).toBeGreaterThan(2.2);
   });
 
   it("names water in the water and land on the land", () => {
@@ -40,12 +26,8 @@ describe("the chart", () => {
   });
 
   it("shows the same sea names on the routes that cross them", () => {
-    expect(labelsFor("Harbor Station", "Kourou")).toEqual(expect.arrayContaining(["GLASS SEA", "VERGE"]));
-    expect(labelsFor("Vandenberg", "Polar Yard")).toEqual(expect.arrayContaining(["QUIET WATER", "HINGE"]));
-    expect(labelsFor("Vandenberg", "Harbor Station")).toEqual(
-      expect.arrayContaining(["GLASS SEA", "VERGE", "AMBER GULF", "CINDER"]),
-    );
-    expect(labelsFor("Polar Yard", "Kodiak")).toEqual(expect.arrayContaining(["DRIFT"]));
+    expect(labelsFor("Boca Chica", "Keel")).toEqual(expect.arrayContaining(["LONG FETCH"]));
+    expect(labelsFor("Keel", "Boca Chica")).toEqual(expect.arrayContaining(["LONG FETCH"]));
   });
 
   it("points the in-flight arrow along the track", () => {
@@ -79,7 +61,7 @@ describe("the chart", () => {
   });
 
   it("matches the arrow to the curve tangent", () => {
-    const course = layCourse(PLACES.Wallops, PLACES["Harbor Station"], 0.18);
+    const course = layCourse(PLACES.Wallops, PLACES.Gale, 0.18);
     expect(course.degrees).toBeCloseTo(headingDegrees(course.frame.from, course.bend, course.frame.to, 0.18), 5);
     expect(Number.isFinite(course.degrees)).toBe(true);
   });

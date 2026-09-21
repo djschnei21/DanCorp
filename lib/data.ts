@@ -1,11 +1,11 @@
 import type { Customer, Vehicle } from "./types";
 
 export const customers: Customer[] = [
-  { id: "helios-bio", name: "Helios Bio", site: "Kourou", contract: "standing" },
+  { id: "helios-bio", name: "Helios Bio", site: "Keel", contract: "standing" },
   { id: "northline-metals", name: "Northline Metals", site: "Vandenberg", contract: "standing" },
   { id: "lumen-grid", name: "Lumen Grid", site: "Wallops", contract: "spot" },
-  { id: "kite-cable", name: "Kite & Cable", site: "Mojave", contract: "standing" },
-  { id: "brine-works", name: "Brine Works", site: "Kodiak", contract: "spot" },
+  { id: "kite-cable", name: "Kite & Cable", site: "Harrow", contract: "standing" },
+  { id: "brine-works", name: "Brine Works", site: "Gale", contract: "spot" },
   { id: "paperplane", name: "Paperplane", site: "Boca Chica", contract: "spot" },
 ];
 

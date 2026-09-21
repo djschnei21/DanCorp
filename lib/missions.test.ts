@@ -57,23 +57,23 @@ describe("the shift", () => {
     expect(windows).toEqual([...windows].sort((a, b) => a.localeCompare(b)));
     expect(board.map((mission) => mission.id)).toEqual([
       "DC-1042",
-      "DC-1044",
-      "DC-1046",
       "DC-1048",
-      "DC-1050",
+      "DC-1046",
       "DC-1058",
+      "DC-1044",
+      "DC-1050",
       "DC-1056",
       "DC-1054",
       "DC-1052",
-      "DC-1060",
       "DC-1062",
+      "DC-1060",
       "DC-1064",
     ]);
     expect(board[0]?.customerName).toBe("Helios Bio");
     expect(board[0]?.vehicleName).toBe("Skiff-4");
-    expect(board[0]?.origin).toBe("Harbor Station");
-    expect(board[0]?.destination).toBe("Kourou");
-    expect(board[0]?.windowStart).toBe("2026-09-21T10:40:00.000Z");
+    expect(board[0]?.origin).toBe("Keel");
+    expect(board[0]?.destination).toBe("Boca Chica");
+    expect(board[0]?.windowStart).toBe("2026-09-21T10:42:00.000Z");
   });
 
   it("gives every mission an origin and a destination", () => {
@@ -86,13 +86,13 @@ describe("the shift", () => {
           (mission.origin === mission.site || mission.destination === mission.site),
       ),
     ).toBe(true);
-    expect(board.find((mission) => mission.id === "DC-1052")).toMatchObject({
-      origin: "Vandenberg",
-      destination: "Polar Yard",
+    expect(board.find((mission) => mission.id === "DC-1046")).toMatchObject({
+      origin: "Boca Chica",
+      destination: "Keel",
     });
-    expect(board.find((mission) => mission.id === "DC-1060")).toMatchObject({
-      origin: "Polar Yard",
-      destination: "Kodiak",
+    expect(board.find((mission) => mission.id === "DC-1056")).toMatchObject({
+      origin: "Harrow",
+      destination: "Vandenberg",
     });
     expect(day.missions.every((mission) => mission.origin in PLACES && mission.destination in PLACES)).toBe(true);
   });
@@ -108,9 +108,9 @@ describe("the shift", () => {
     ).toBe(true);
     const inFlight = missions.filter((mission) => mission.status === "in_flight");
     expect(inFlight.map((mission) => mission.id)).toEqual(["DC-1050"]);
-    expect(inFlight[0]?.flown).toBeCloseTo(42 / 82, 5);
-    expect(inFlight[0]?.liftoffAt).toBe("2026-09-21T13:28:00.000Z");
-    expect(inFlight[0]?.dockAt).toBe("2026-09-21T14:50:00.000Z");
+    expect(inFlight[0]?.flown).toBeCloseTo(41 / 42, 5);
+    expect(inFlight[0]?.liftoffAt).toBe("2026-09-21T13:29:00.000Z");
+    expect(inFlight[0]?.dockAt).toBe("2026-09-21T14:11:00.000Z");
   });
 
   it("returns null for an unknown mission", () => {
@@ -142,9 +142,9 @@ describe("the shift", () => {
     expect(rows.find((customer) => customer.id === "helios-bio")?.openMissionCount).toBe(1);
     expect(rows.find((customer) => customer.id === "northline-metals")?.openMissionCount).toBe(1);
     expect(rows.find((customer) => customer.id === "lumen-grid")?.openMissionCount).toBe(1);
-    expect(rows.find((customer) => customer.id === "kite-cable")?.openMissionCount).toBe(1);
+    expect(rows.find((customer) => customer.id === "kite-cable")?.openMissionCount).toBe(2);
     expect(rows.find((customer) => customer.id === "brine-works")?.openMissionCount).toBe(2);
-    expect(rows.find((customer) => customer.id === "paperplane")?.openMissionCount).toBe(2);
+    expect(rows.find((customer) => customer.id === "paperplane")?.openMissionCount).toBe(1);
     expect(vehicles.find((vehicle) => vehicle.id === "mule-9")?.nextMissionId).toBeNull();
     const fleet = getFleet(DEMO_INSTANT);
     expect(fleet.find((vehicle) => vehicle.id === "skiff-4")).toMatchObject({
@@ -216,10 +216,13 @@ describe("the shift", () => {
 
   it("publishes distance and speed from the leg", () => {
     const delivered = missions.find((mission) => mission.id === "DC-1042");
-    expect(delivered?.distanceKm).toBeGreaterThan(3500);
-    expect(delivered?.distanceKm).toBeLessThan(4500);
-    expect(delivered?.speedKmh).toBeGreaterThan(5000);
-    expect(delivered?.speedKmh).toBeLessThan(8000);
+    expect(delivered?.distanceKm).toBeGreaterThan(19000);
+    expect(delivered?.distanceKm).toBeLessThan(21000);
+    expect(delivered?.speedKmh).toBeGreaterThan(27000);
+    expect(delivered?.speedKmh).toBeLessThan(30000);
+    const mph = (delivered?.speedKmh ?? 0) / 1.609344;
+    expect(mph).toBeGreaterThan(17000);
+    expect(mph).toBeLessThan(18000);
     const scrubbed = resolveMissions(zonedTimeOnDate("2026-09-21", "16:20", SHIFT_ZONE)).find(
       (mission) => mission.id === "DC-1064",
     );
@@ -243,7 +246,7 @@ describe("formatWindow", () => {
   });
 
   it("prints a route from origin to destination", () => {
-    expect(formatRoute("Mojave", "Harbor Station")).toBe("Mojave → Harbor Station");
+    expect(formatRoute("Boca Chica", "Keel")).toBe("Boca Chica → Keel");
   });
 
   it("prints the live clocks and the remaining time", () => {
@@ -251,20 +254,20 @@ describe("formatWindow", () => {
     expect(formatShiftDate(DEMO_INSTANT, SHIFT_ZONE)).toBe("21 Sep 2026");
     expect(formatZonedClock(DEMO_INSTANT, SHIFT_ZONE)).toBe("10:10:00 EDT");
     expect(formatUtcClock(DEMO_INSTANT)).toBe("14:10:00 UTC");
-    expect(formatShiftSpan(shift.start.toISOString(), shift.end.toISOString())).toBe("10:40–21:18 UTC");
+    expect(formatShiftSpan(shift.start.toISOString(), shift.end.toISOString())).toBe("10:42–20:15 UTC");
     expect(formatRemaining(40 * 60 * 1000)).toBe("40:00");
     expect(formatRemaining(5 * 3600 * 1000 + 30 * 60 * 1000)).toBe("5:30:00");
     expect(formatRemaining(59 * 1000)).toBe("0:59");
     const airborne = resolveMissions(DEMO_INSTANT).find((mission) => mission.id === "DC-1050");
-    expect(legCountdown(airborne!)).toBe("Lands in 40:00");
-    expect(legTiming(airborne!)).toBe("ETA 14:50 UTC");
+    expect(legCountdown(airborne!)).toBe("Lands in 1:00");
+    expect(legTiming(airborne!)).toBe("ETA 14:11 UTC");
     const delivered = resolveMissions(DEMO_INSTANT).find((mission) => mission.id === "DC-1042");
-    expect(legTiming(delivered!)).toBe("10:48–11:26 UTC");
+    expect(legTiming(delivered!)).toBe("10:50–11:32 UTC");
     const scrubbed = resolveMissions(zonedTimeOnDate("2026-09-21", "16:20", SHIFT_ZONE)).find(
       (mission) => mission.id === "DC-1064",
     );
     expect(legTiming(scrubbed!)).toBe("20:25 UTC");
     const held = resolveMissions(DEMO_INSTANT).find((mission) => mission.id === "DC-1056");
-    expect(legCountdown(held!)).toBe("Liftoff in 38:00");
+    expect(legCountdown(held!)).toBe("Liftoff in 39:00");
   });
 });
