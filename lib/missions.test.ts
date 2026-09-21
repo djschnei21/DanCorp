@@ -223,8 +223,10 @@ describe("the shift", () => {
     expect(scrubbed?.status).toBe("scrubbed");
     expect(scrubbed?.speedKmh).toBeNull();
     expect(scrubbed?.distanceKm).toBeGreaterThan(0);
-    expect(formatDistance(delivered?.distanceKm ?? 0)).toMatch(/^\d{1,3}(,\d{3})* km$/);
-    expect(formatSpeed(delivered?.speedKmh ?? null)).toMatch(/^\d{1,3}(,\d{3})* km\/h$/);
+    expect(formatDistance(delivered?.distanceKm ?? 0)).toMatch(/^\d{1,3}(,\d{3})* mi$/);
+    expect(formatSpeed(delivered?.speedKmh ?? null)).toMatch(/^\d{1,3}(,\d{3})* mph$/);
+    expect(formatDistance(1609.344)).toBe("1,000 mi");
+    expect(formatSpeed(1609.344)).toBe("1,000 mph");
     expect(formatSpeed(null)).toBe("—");
   });
 });

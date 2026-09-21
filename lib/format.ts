@@ -63,15 +63,21 @@ export function formatShiftSpan(startIso: string, endIso: string): string {
   return `${formatWindow(startIso).slice(0, 5)}–${formatWindow(endIso)}`;
 }
 
+const KM_PER_MILE = 1.609344;
+
+function toMiles(km: number): number {
+  return km / KM_PER_MILE;
+}
+
 export function formatDistance(km: number): string {
-  return `${Math.round(km).toLocaleString("en-US")} km`;
+  return `${Math.round(toMiles(km)).toLocaleString("en-US")} mi`;
 }
 
 export function formatSpeed(kmh: number | null): string {
   if (kmh === null) {
     return "—";
   }
-  return `${Math.round(kmh).toLocaleString("en-US")} km/h`;
+  return `${Math.round(toMiles(kmh)).toLocaleString("en-US")} mph`;
 }
 
 export function formatRemaining(ms: number): string {
