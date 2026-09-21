@@ -199,7 +199,7 @@ export const ISOBATHS: Ring[] = [
   ],
 ];
 
-export const ICE: Ring[] = [
+export const ICE: Ring = [
   [-180, 73.4],
   [-160, 72.6],
   [-148, 73.8],
