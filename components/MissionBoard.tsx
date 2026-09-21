@@ -1,6 +1,7 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { missionCountLabel } from "@/lib/format";
 import { filterBoard, isMissionStatus } from "@/lib/missions";
 import type { BoardMission, CustomerSummary } from "@/lib/types";
@@ -8,33 +9,46 @@ import { MissionFilters } from "./MissionFilters";
 import { MissionTable } from "./MissionTable";
 import { MissionTimeline } from "./MissionTimeline";
 
+function normalizeStatus(value: string): string {
+  return isMissionStatus(value) ? value : "all";
+}
+
+function normalizeCustomer(value: string, customers: CustomerSummary[]): string {
+  return customers.some((customer) => customer.id === value) ? value : "all";
+}
+
 export function MissionBoard({
   missions,
   customers,
+  initialStatus,
+  initialCustomer,
 }: {
   missions: BoardMission[];
   customers: CustomerSummary[];
+  initialStatus: string;
+  initialCustomer: string;
 }) {
-  const searchParams = useSearchParams();
   const router = useRouter();
-  const statusParam = searchParams.get("status");
-  const customerParam = searchParams.get("customer");
-  const status = isMissionStatus(statusParam) ? statusParam : "all";
-  const customerId = customers.some((customer) => customer.id === customerParam)
-    ? (customerParam as string)
-    : "all";
+  const [status, setStatus] = useState(() => normalizeStatus(initialStatus));
+  const [customerId, setCustomerId] = useState(() => normalizeCustomer(initialCustomer, customers));
+  const [seenStatus, setSeenStatus] = useState(initialStatus);
+  const [seenCustomer, setSeenCustomer] = useState(initialCustomer);
+
+  if (initialStatus !== seenStatus || initialCustomer !== seenCustomer) {
+    setSeenStatus(initialStatus);
+    setSeenCustomer(initialCustomer);
+    setStatus(normalizeStatus(initialStatus));
+    setCustomerId(normalizeCustomer(initialCustomer, customers));
+  }
+
   const filtered = filterBoard(missions, status, customerId);
 
   function replace(nextStatus: string, nextCustomer: string) {
-    const params = new URLSearchParams(searchParams.toString());
-    if (nextStatus === "all") {
-      params.delete("status");
-    } else {
+    const params = new URLSearchParams();
+    if (nextStatus !== "all") {
       params.set("status", nextStatus);
     }
-    if (nextCustomer === "all") {
-      params.delete("customer");
-    } else {
+    if (nextCustomer !== "all") {
       params.set("customer", nextCustomer);
     }
     const query = params.toString();
@@ -47,8 +61,14 @@ export function MissionBoard({
         customers={customers}
         status={status}
         customerId={customerId}
-        onStatus={(value) => replace(value, customerId)}
-        onCustomer={(value) => replace(status, value)}
+        onStatus={(value) => {
+          setStatus(value);
+          replace(value, customerId);
+        }}
+        onCustomer={(value) => {
+          setCustomerId(value);
+          replace(status, value);
+        }}
       />
       {filtered.length > 0 ? (
         <p className="text-sm text-muted">{missionCountLabel(filtered.length)}</p>

@@ -28,7 +28,7 @@ export default async function MissionPage({ params }: { params: Promise<{ id: st
   const mission = getMissionDetail(id);
 
   if (!mission) {
-    return <h1 className="text-2xl font-semibold tracking-tight">No mission {id}.</h1>;
+    return <h1 className="text-2xl font-semibold tracking-tight">{`No mission ${id}.`}</h1>;
   }
 
   return (

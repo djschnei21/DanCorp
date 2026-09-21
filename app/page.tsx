@@ -1,9 +1,13 @@
-import { Suspense } from "react";
 import { KpiStrip } from "@/components/KpiStrip";
 import { MissionBoard } from "@/components/MissionBoard";
 import { getBoard, getCustomers, kpiCounts } from "@/lib/missions";
 
-export default function DispatchPage() {
+export default async function DispatchPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ status?: string; customer?: string }>;
+}) {
+  const params = await searchParams;
   const missions = getBoard();
   const customers = getCustomers();
 
@@ -11,9 +15,12 @@ export default function DispatchPage() {
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold tracking-tight">Dispatch</h1>
       <KpiStrip counts={kpiCounts()} />
-      <Suspense fallback={<p className="text-sm text-muted">Loading the board.</p>}>
-        <MissionBoard missions={missions} customers={customers} />
-      </Suspense>
+      <MissionBoard
+        missions={missions}
+        customers={customers}
+        initialStatus={params.status ?? "all"}
+        initialCustomer={params.customer ?? "all"}
+      />
     </div>
   );
 }

@@ -24,14 +24,14 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-bg text-fg">
       <header className="sticky top-0 z-10 border-b border-card-04 bg-bg">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-3 px-4 py-4">
           <div>
             <Link href="/" className="text-lg font-semibold tracking-tight">
               DanCorp
             </Link>
             <p className="text-sm text-muted">Low Earth orbit, same shift.</p>
           </div>
-          <div className="flex items-center gap-5">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <nav className="flex gap-4 text-sm">
               {links.map((link) => {
                 const active = isActive(pathname, link.href);
