@@ -69,15 +69,30 @@ function toMiles(km: number): number {
   return km / KM_PER_MILE;
 }
 
+function groupedMiles(km: number): string {
+  return Math.round(toMiles(km)).toLocaleString("en-US");
+}
+
+export function formatMileCount(km: number): string {
+  return groupedMiles(km);
+}
+
+export function formatMphCount(kmh: number | null): string {
+  if (kmh === null) {
+    return "—";
+  }
+  return groupedMiles(kmh);
+}
+
 export function formatDistance(km: number): string {
-  return `${Math.round(toMiles(km)).toLocaleString("en-US")} mi`;
+  return `${groupedMiles(km)} mi`;
 }
 
 export function formatSpeed(kmh: number | null): string {
   if (kmh === null) {
     return "—";
   }
-  return `${Math.round(toMiles(kmh)).toLocaleString("en-US")} mph`;
+  return `${groupedMiles(kmh)} mph`;
 }
 
 export function formatRemaining(ms: number): string {

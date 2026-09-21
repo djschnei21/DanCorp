@@ -3,6 +3,8 @@ import day from "../data/day.json";
 import { customers, vehicles } from "./data";
 import {
   formatDistance,
+  formatMileCount,
+  formatMphCount,
   formatRemaining,
   formatRoute,
   formatShiftDate,
@@ -227,6 +229,9 @@ describe("the shift", () => {
     expect(formatSpeed(delivered?.speedKmh ?? null)).toMatch(/^\d{1,3}(,\d{3})* mph$/);
     expect(formatDistance(1609.344)).toBe("1,000 mi");
     expect(formatSpeed(1609.344)).toBe("1,000 mph");
+    expect(formatMileCount(1609.344)).toBe("1,000");
+    expect(formatMphCount(1609.344)).toBe("1,000");
+    expect(formatMphCount(null)).toBe("—");
     expect(formatSpeed(null)).toBe("—");
   });
 });
