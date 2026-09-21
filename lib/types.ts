@@ -40,6 +40,7 @@ export type Mission = {
   cargo: string;
   origin: string;
   destination: string;
+  flown: number;
   windowStart: string;
   status: MissionStatus;
   delayMinutes: number;

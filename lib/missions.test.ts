@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { customers, missions, vehicles } from "./data";
+import { PLACES } from "./places";
 import { formatRoute, formatWindow } from "./format";
 import {
   filterBoard,
@@ -50,6 +51,23 @@ describe("the shift", () => {
       origin: "Polar Yard",
       destination: "Kodiak",
     });
+    expect(missions.every((mission) => mission.origin in PLACES && mission.destination in PLACES)).toBe(true);
+  });
+
+  it("marks the course flown only as far as the ship has gone", () => {
+    expect(missions.filter((mission) => mission.status === "delivered").every((mission) => mission.flown === 1)).toBe(
+      true,
+    );
+    expect(
+      missions
+        .filter((mission) => mission.status === "queued" || mission.status === "delayed" || mission.status === "scrubbed")
+        .every((mission) => mission.flown === 0),
+    ).toBe(true);
+    const inFlight = missions
+      .filter((mission) => mission.status === "in_flight")
+      .sort((a, b) => a.windowStart.localeCompare(b.windowStart));
+    expect(inFlight.map((mission) => mission.flown)).toEqual([0.72, 0.46, 0.18]);
+    expect(inFlight.every((mission) => mission.flown > 0 && mission.flown < 1)).toBe(true);
   });
 
   it("returns null for an unknown mission", () => {

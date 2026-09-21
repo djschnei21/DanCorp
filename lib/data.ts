@@ -55,10 +55,11 @@ function eventsFor(id: string, status: MissionStatus, windowStart: string): Miss
 }
 
 function mission(
-  input: Omit<Mission, "events" | "delayMinutes"> & { delayMinutes?: number },
+  input: Omit<Mission, "events" | "delayMinutes" | "flown"> & { delayMinutes?: number; flown?: number },
 ): Mission {
   return {
     delayMinutes: 0,
+    flown: input.status === "delivered" ? 1 : 0,
     ...input,
     events: eventsFor(input.id, input.status, input.windowStart),
   };
@@ -130,6 +131,8 @@ export const missions: Mission[] = [
     destination: "Harbor Station",
     windowStart: windowAt("11:10"),
     status: "in_flight",
+    // These three windows do not overlap, so the snapshot gives each ship its own place on the course.
+    flown: 0.72,
   }),
   mission({
     id: "DC-1052",
@@ -140,6 +143,7 @@ export const missions: Mission[] = [
     destination: "Polar Yard",
     windowStart: windowAt("12:20"),
     status: "in_flight",
+    flown: 0.46,
   }),
   mission({
     id: "DC-1054",
@@ -150,6 +154,7 @@ export const missions: Mission[] = [
     destination: "Harbor Station",
     windowStart: windowAt("13:30"),
     status: "in_flight",
+    flown: 0.18,
   }),
   mission({
     id: "DC-1056",

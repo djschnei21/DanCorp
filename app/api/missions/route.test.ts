@@ -15,6 +15,7 @@ describe("GET /api/missions", () => {
     expect(body.missions[0].vehicleName).toBe("Skiff-4");
     expect(body.missions[0].origin).toBe("Harbor Station");
     expect(body.missions[0].destination).toBe("Kourou");
+    expect(body.missions[0].flown).toBe(1);
     const windows = body.missions.map((mission: { windowStart: string }) => mission.windowStart);
     expect(windows).toEqual([...windows].sort((a, b) => a.localeCompare(b)));
   });

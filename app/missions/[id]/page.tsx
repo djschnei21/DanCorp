@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { CourseMap } from "@/components/CourseMap";
 import { StatusBadge } from "@/components/StatusBadge";
 import { CONTRACT_LABEL, READINESS_LABEL, formatRoute, formatWindow } from "@/lib/format";
 import { getMissionDetail } from "@/lib/missions";
@@ -70,6 +71,12 @@ export default async function MissionPage({ params }: { params: Promise<{ id: st
               <span className="ml-2 align-middle font-mono text-sm tracking-wide text-[#f54e00]/80">min</span>
             </p>
           ) : null}
+        </div>
+      </section>
+      <section aria-label="Course">
+        <h2 className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted">Course</h2>
+        <div className="mt-3 overflow-hidden rounded-[28px] border border-card-04">
+          <CourseMap origin={mission.origin} destination={mission.destination} flown={mission.flown} />
         </div>
       </section>
       <div className="grid gap-3 min-[720px]:grid-cols-4">
