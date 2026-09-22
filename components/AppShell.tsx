@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { assetPath } from "@/lib/asset";
 import { formatUtcClock, formatZonedClock } from "@/lib/format";
 import { SHIFT_ZONE } from "@/lib/shift";
 import { useShift } from "./ShiftProvider";
@@ -32,7 +33,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-3 px-4 py-3">
           <Link href="/" className="flex items-center gap-3">
             <Image
-              src="/brand/emblem.png"
+              src={assetPath("/brand/emblem.png")}
               alt=""
               width={44}
               height={44}

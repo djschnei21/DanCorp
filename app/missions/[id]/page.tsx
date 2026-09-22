@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import { MissionView } from "@/components/MissionView";
 import { NoMission } from "@/components/NoMission";
-import { knownMission } from "@/lib/shift";
+import { knownMission, missionIds } from "@/lib/shift";
+
+export function generateStaticParams() {
+  return missionIds().map((id) => ({ id }));
+}
+
+export const dynamicParams = false;
 
 export async function generateMetadata({
   params,

@@ -1,20 +1,36 @@
 "use client";
 
+import { Suspense } from "react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { KpiStrip } from "@/components/KpiStrip";
 import { MissionBoard } from "@/components/MissionBoard";
 import { useShift } from "@/components/ShiftProvider";
+import { assetPath } from "@/lib/asset";
 import { formatShiftDate, formatShiftSpan, formatZonedClock } from "@/lib/format";
 import { getBoard, getCustomers, kpiCounts } from "@/lib/missions";
 import { describeShift, resolveMissions } from "@/lib/shift";
+import type { BoardMission, CustomerSummary } from "@/lib/types";
 
-export function DispatchView({
-  initialStatus,
-  initialCustomer,
+function FilteredBoard({
+  missions,
+  customers,
 }: {
-  initialStatus: string;
-  initialCustomer: string;
+  missions: BoardMission[];
+  customers: CustomerSummary[];
 }) {
+  const params = useSearchParams();
+  return (
+    <MissionBoard
+      missions={missions}
+      customers={customers}
+      initialStatus={params.get("status") ?? "all"}
+      initialCustomer={params.get("customer") ?? "all"}
+    />
+  );
+}
+
+export function DispatchView() {
   const now = new Date(useShift());
   const shift = describeShift(now);
   const missions = getBoard(now);
@@ -25,7 +41,7 @@ export function DispatchView({
       <section className="relative">
         <div className="relative h-[22rem] overflow-hidden rounded-[28px] min-[720px]:h-[28rem]">
           <Image
-            src="/brand/earth.png"
+            src={assetPath("/brand/earth.png")}
             alt=""
             fill
             priority
@@ -55,12 +71,12 @@ export function DispatchView({
           <KpiStrip counts={kpiCounts(resolveMissions(now))} />
         </div>
       </section>
-      <MissionBoard
-        missions={missions}
-        customers={customers}
-        initialStatus={initialStatus}
-        initialCustomer={initialCustomer}
-      />
+      {/* Static export has no request, so the query is applied after hydration. */}
+      <Suspense
+        fallback={<MissionBoard missions={missions} customers={customers} initialStatus="all" initialCustomer="all" />}
+      >
+        <FilteredBoard missions={missions} customers={customers} />
+      </Suspense>
     </div>
   );
 }

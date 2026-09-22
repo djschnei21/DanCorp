@@ -4,8 +4,6 @@ import { ShiftProvider } from "@/components/ShiftProvider";
 import { themeBootScript } from "@/lib/theme";
 import "./globals.css";
 
-export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = {
   title: "DanCorp Dispatch",
   description: "Duty board for the current Eastern day.",
@@ -18,7 +16,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
       </head>
       <body className="antialiased">
-        {/* Request time is the first paint. The client ticks after mount. */}
+        {/* Build or request time is the first paint. The client snaps to now on mount. */}
         {/* eslint-disable-next-line react-hooks/purity */}
         <ShiftProvider initialNow={Date.now()}>
           <AppShell>{children}</AppShell>

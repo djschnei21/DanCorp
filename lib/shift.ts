@@ -111,6 +111,10 @@ function resolveOne(plan: DayMission, ymd: string, now: Date): Mission {
   };
 }
 
+export function missionIds(): string[] {
+  return day.missions.map((mission) => mission.id);
+}
+
 export function knownMission(id: string): boolean {
   return day.missions.some((mission) => mission.id === id);
 }

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { assetPath } from "@/lib/asset";
 import { formatMileCount, formatMphCount, formatRoute, legTiming } from "@/lib/format";
 import type { BoardMission, MissionStatus } from "@/lib/types";
 import { LegReadout } from "./LegReadout";
@@ -18,7 +19,7 @@ export function MissionTable({ missions }: { missions: BoardMission[] }) {
     return (
       <div className="rounded-3xl border border-dashed border-card-04 bg-card px-6 py-16 text-center">
         <Image
-          src="/brand/emblem.png"
+          src={assetPath("/brand/emblem.png")}
           alt=""
           width={64}
           height={64}

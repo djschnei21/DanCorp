@@ -8,8 +8,13 @@ export function ShiftProvider({ initialNow, children }: { initialNow: number; ch
   const [now, setNow] = useState(initialNow);
 
   useEffect(() => {
-    const id = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(id);
+    // Static HTML is stamped at build time. Catch the clock up before the first tick.
+    const kick = window.setTimeout(() => setNow(Date.now()), 0);
+    const id = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => {
+      window.clearTimeout(kick);
+      window.clearInterval(id);
+    };
   }, []);
 
   return <ShiftClock.Provider value={now}>{children}</ShiftClock.Provider>;
