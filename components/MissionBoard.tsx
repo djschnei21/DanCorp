@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { missionCountLabel } from "@/lib/format";
+import { activeMissionLayout } from "@/lib/mission-view";
 import { filterBoard, isMissionStatus } from "@/lib/missions";
 import type { BoardMission, CustomerSummary } from "@/lib/types";
 import { MissionFilters } from "./MissionFilters";
 import { MissionTable } from "./MissionTable";
 import { MissionTimeline } from "./MissionTimeline";
+import { MissionViewToggle, useMissionView } from "./MissionViewToggle";
 
 function normalizeStatus(value: string): string {
   return isMissionStatus(value) ? value : "all";
@@ -29,6 +31,7 @@ export function MissionBoard({
   initialCustomer: string;
 }) {
   const router = useRouter();
+  const view = useMissionView();
   const [status, setStatus] = useState(() => normalizeStatus(initialStatus));
   const [customerId, setCustomerId] = useState(() => normalizeCustomer(initialCustomer, customers));
   const [seenStatus, setSeenStatus] = useState(initialStatus);
@@ -42,6 +45,7 @@ export function MissionBoard({
   }
 
   const filtered = filterBoard(missions, status, customerId);
+  const layout = activeMissionLayout(view, filtered.length);
 
   function replace(nextStatus: string, nextCustomer: string) {
     const params = new URLSearchParams();
@@ -71,14 +75,20 @@ export function MissionBoard({
             replace(status, value);
           }}
         />
-        {filtered.length > 0 ? (
-          <p className="pb-2 font-mono text-xs uppercase tracking-[0.16em] text-muted">
-            {missionCountLabel(filtered.length)}
-          </p>
-        ) : null}
+        <div className="flex items-center gap-3 pb-2">
+          {filtered.length > 0 ? (
+            <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
+              {missionCountLabel(filtered.length)}
+            </p>
+          ) : null}
+          <MissionViewToggle />
+        </div>
       </div>
-      <MissionTimeline missions={filtered} />
-      <MissionTable missions={filtered} />
+      {layout === "cards" ? (
+        <MissionTimeline missions={filtered} />
+      ) : (
+        <MissionTable missions={filtered} />
+      )}
     </div>
   );
 }
