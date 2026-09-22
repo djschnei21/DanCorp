@@ -26,11 +26,20 @@ export function formatRoute(origin: string, destination: string): string {
   return `${origin} → ${destination}`;
 }
 
-export function formatWindow(iso: string): string {
+function zoneSuffix(date: Date, timeZone: string): string {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    timeZoneName: "short",
+  }).formatToParts(date);
+  return parts.find((part) => part.type === "timeZoneName")?.value ?? timeZone;
+}
+
+export function formatWindow(iso: string, timeZone = "UTC"): string {
   const date = new Date(iso);
-  const hours = String(date.getUTCHours()).padStart(2, "0");
-  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
-  return `${hours}:${minutes} UTC`;
+  const parts = zoneParts(date, timeZone);
+  const hours = String(parts.hour).padStart(2, "0");
+  const minutes = String(parts.minute).padStart(2, "0");
+  return `${hours}:${minutes} ${zoneSuffix(date, timeZone)}`;
 }
 
 export function formatUtcClock(date: Date): string {
@@ -59,8 +68,8 @@ export function formatShiftDate(date: Date, timeZone: string): string {
   return `${parts.day} ${MONTHS[parts.month - 1]} ${parts.year}`;
 }
 
-export function formatShiftSpan(startIso: string, endIso: string): string {
-  return `${formatWindow(startIso).slice(0, 5)}–${formatWindow(endIso)}`;
+export function formatShiftSpan(startIso: string, endIso: string, timeZone = "UTC"): string {
+  return `${formatWindow(startIso, timeZone).slice(0, 5)}–${formatWindow(endIso, timeZone)}`;
 }
 
 const KM_PER_MILE = 1.609344;
@@ -114,19 +123,22 @@ export function legSummary(mission: { distanceKm: number; speedKmh: number | nul
   return `${formatDistance(mission.distanceKm)} · ${formatSpeed(mission.speedKmh)}`;
 }
 
-export function legTiming(mission: {
-  status: MissionStatus;
-  windowStart: string;
-  liftoffAt: string | null;
-  dockAt: string | null;
-}): string {
+export function legTiming(
+  mission: {
+    status: MissionStatus;
+    windowStart: string;
+    liftoffAt: string | null;
+    dockAt: string | null;
+  },
+  timeZone = "UTC",
+): string {
   if (mission.status === "in_flight" && mission.dockAt) {
-    return `ETA ${formatWindow(mission.dockAt)}`;
+    return `ETA ${formatWindow(mission.dockAt, timeZone)}`;
   }
   if (mission.liftoffAt && mission.dockAt) {
-    return `${formatWindow(mission.liftoffAt).slice(0, 5)}–${formatWindow(mission.dockAt)}`;
+    return `${formatWindow(mission.liftoffAt, timeZone).slice(0, 5)}–${formatWindow(mission.dockAt, timeZone)}`;
   }
-  return formatWindow(mission.windowStart);
+  return formatWindow(mission.windowStart, timeZone);
 }
 
 export function legCountdown(mission: {
