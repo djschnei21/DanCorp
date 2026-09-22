@@ -48,6 +48,9 @@ export function MissionTimeline({ missions }: { missions: BoardMission[] }) {
               <span className="mt-1 block truncate text-xs text-muted">
                 {formatRoute(mission.origin, mission.destination)}
               </span>
+              <span className="mt-1 block truncate text-xs text-muted">
+                {mission.customerName} · {mission.vehicleName}
+              </span>
               <span className="mt-2 block">
                 <LegReadout mission={mission} dense />
               </span>
