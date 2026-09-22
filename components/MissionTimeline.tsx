@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useTimeDisplay } from "@/components/TimeFormatToggle";
 import { formatRoute, formatWindow } from "@/lib/format";
 import type { BoardMission, MissionStatus } from "@/lib/types";
 import { LegReadout } from "./LegReadout";
@@ -18,6 +19,7 @@ function dot(status: MissionStatus): string {
 }
 
 export function MissionTimeline({ missions }: { missions: BoardMission[] }) {
+  const { timeZone } = useTimeDisplay();
   if (missions.length === 0) {
     return null;
   }
@@ -38,7 +40,7 @@ export function MissionTimeline({ missions }: { missions: BoardMission[] }) {
               <span className="flex items-center justify-between gap-2">
                 <span className={`inline-block h-2 w-2 rounded-full ${dot(mission.status)}`} />
                 <span className="font-mono text-[11px] tabular-nums text-muted">
-                  {formatWindow(mission.windowStart)}
+                  {formatWindow(mission.windowStart, timeZone)}
                 </span>
               </span>
               <span className="mt-3 block font-mono text-xs text-muted">{mission.id}</span>

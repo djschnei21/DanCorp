@@ -7,6 +7,7 @@ import { KpiStrip } from "@/components/KpiStrip";
 import { MissionBoard } from "@/components/MissionBoard";
 import { useShift } from "@/components/ShiftProvider";
 import { assetPath } from "@/lib/asset";
+import { useTimeDisplay } from "@/components/TimeFormatToggle";
 import { formatShiftDate, formatShiftSpan, formatZonedClock } from "@/lib/format";
 import { getBoard, getCustomers, kpiCounts } from "@/lib/missions";
 import { describeShift, resolveMissions } from "@/lib/shift";
@@ -32,6 +33,7 @@ function FilteredBoard({
 
 export function DispatchView() {
   const now = new Date(useShift());
+  const { timeZone } = useTimeDisplay();
   const shift = describeShift(now);
   const missions = getBoard(now);
   const customers = getCustomers(now);
@@ -56,14 +58,14 @@ export function DispatchView() {
           <span className="pointer-events-none absolute right-4 top-4 h-7 w-7 border-r border-t border-[#edecec]/35" />
           <div className="absolute left-6 top-7 right-6 min-[720px]:left-9 min-[720px]:top-9">
             <p className="text-[11px] font-medium uppercase tracking-[0.32em] text-[#f54e00]">
-              {formatShiftDate(now, shift.zone)}
+              {formatShiftDate(now, timeZone)}
             </p>
             <h1 className="mt-2 font-display text-6xl text-[#edecec] min-[720px]:text-7xl">Dispatch</h1>
             <p className="mt-3 font-mono text-sm tracking-wide text-[#edecec]/80">
-              {formatShiftSpan(shift.start.toISOString(), shift.end.toISOString())}
+              {formatShiftSpan(shift.start.toISOString(), shift.end.toISOString(), timeZone)}
             </p>
             <p className="mt-1 font-mono text-sm tabular-nums tracking-wide text-[#f54e00]">
-              {formatZonedClock(now, shift.zone)}
+              {formatZonedClock(now, timeZone)}
             </p>
           </div>
         </div>

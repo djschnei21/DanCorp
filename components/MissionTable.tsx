@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useTimeDisplay } from "@/components/TimeFormatToggle";
 import { assetPath } from "@/lib/asset";
 import { formatMileCount, formatMphCount, formatRoute, legTiming } from "@/lib/format";
 import type { BoardMission, MissionStatus } from "@/lib/types";
@@ -15,6 +16,7 @@ const rail: Record<MissionStatus, string> = {
 };
 
 export function MissionTable({ missions }: { missions: BoardMission[] }) {
+  const { timeZone } = useTimeDisplay();
   if (missions.length === 0) {
     return (
       <div className="rounded-3xl border border-dashed border-card-04 bg-card px-6 py-16 text-center">
@@ -85,7 +87,7 @@ export function MissionTable({ missions }: { missions: BoardMission[] }) {
                     </div>
                   </td>
                   <td className={`whitespace-nowrap px-2 py-2 text-right font-mono text-[13px] tabular-nums ${live ? "text-accent" : ""}`}>
-                    {legTiming(mission)}
+                    {legTiming(mission, timeZone)}
                   </td>
                   <td className="whitespace-nowrap px-3 py-2 text-right">
                     <StatusBadge status={mission.status} />
@@ -129,7 +131,7 @@ export function MissionTable({ missions }: { missions: BoardMission[] }) {
                 {mission.customerName} · {mission.vehicleName}
               </p>
               <p className={`mt-1 text-sm font-mono tabular-nums ${mission.status === "in_flight" ? "text-accent" : "text-muted"}`}>
-                {legTiming(mission)}
+                {legTiming(mission, timeZone)}
               </p>
             </Link>
           </li>

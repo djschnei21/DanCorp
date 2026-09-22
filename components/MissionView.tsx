@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { CourseMap } from "@/components/CourseMap";
+import { useTimeDisplay } from "@/components/TimeFormatToggle";
 import { NoMission } from "@/components/NoMission";
 import { StatusBadge } from "@/components/StatusBadge";
 import { useShift } from "@/components/ShiftProvider";
@@ -31,6 +32,7 @@ function Fact({ label, children }: { label: string; children: ReactNode }) {
 
 export function MissionView({ id }: { id: string }) {
   const mission = getMissionDetail(id, new Date(useShift()));
+  const { timeZone } = useTimeDisplay();
   if (!mission) {
     return <NoMission id={id} />;
   }
@@ -118,7 +120,7 @@ export function MissionView({ id }: { id: string }) {
           </p>
         </Fact>
         <Fact label="Window">
-          <p className="font-display text-2xl tabular-nums">{formatWindow(mission.windowStart)}</p>
+          <p className="font-display text-2xl tabular-nums">{formatWindow(mission.windowStart, timeZone)}</p>
         </Fact>
         {mission.status === "delayed" ? (
           <Fact label="Delay">
@@ -144,7 +146,9 @@ export function MissionView({ id }: { id: string }) {
                     event.kind === "exception" ? "bg-accent shadow-[0_0_10px_#f54e00]" : "bg-fg/35"
                   }`}
                 />
-                <span className="w-24 shrink-0 tabular-nums text-muted">{formatWindow(event.at)}</span>
+                <span className="w-32 shrink-0 whitespace-nowrap tabular-nums text-muted">
+                  {formatWindow(event.at, timeZone)}
+                </span>
                 <span className={event.kind === "exception" ? "text-accent" : undefined}>{event.label}</span>
               </li>
             ))}
