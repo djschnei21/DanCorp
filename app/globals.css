@@ -23,7 +23,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --bg: #14120b;
+    --bg: #000000;
     --fg: #edecec;
     --accent: #f54e00;
     --card: #1b1913;
@@ -37,7 +37,7 @@
 }
 
 .dark {
-  --bg: #14120b;
+  --bg: #000000;
   --fg: #edecec;
   --accent: #f54e00;
   --card: #1b1913;
