@@ -45,7 +45,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               <span className="mt-1 block text-xs text-muted">Short-haul orbital courier.</span>
             </span>
           </Link>
-          <p className="order-last w-full font-mono text-[11px] tabular-nums text-muted min-[860px]:order-none min-[860px]:w-auto">
+          <p className="order-last w-full font-mono text-[13px] tabular-nums text-muted min-[860px]:order-none min-[860px]:w-auto">
             {formatZonedClock(now, timeZone)}
           </p>
           <div className="flex w-full flex-wrap items-center justify-end gap-2 min-[860px]:w-auto">
