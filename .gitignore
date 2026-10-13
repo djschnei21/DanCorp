@@ -1,5 +1,8 @@
 node_modules
-.cursor
+# Local Cursor state. Repo skills stay tracked.
+.cursor/*
+!.cursor/skills/
+!.cursor/skills/**
 .next
 next-env.d.ts
 out
