@@ -16,7 +16,7 @@ afterEach(() => {
 
 describe("GET /api/missions", () => {
   it("returns the board in window order", async () => {
-    const response = await getMissions();
+    const response = await getMissions(new Request("http://localhost/api/missions"));
     expect(response.status).toBe(200);
     const body = await response.json();
     expect(body.missions).toHaveLength(12);
@@ -30,6 +30,22 @@ describe("GET /api/missions", () => {
     expect(body.missions[0].speedKmh).toBeGreaterThan(0);
     const windows = body.missions.map((mission: { windowStart: string }) => mission.windowStart);
     expect(windows).toEqual([...windows].sort((a, b) => a.localeCompare(b)));
+  });
+
+  it("filters by status", async () => {
+    const response = await getMissions(new Request("http://localhost/api/missions?status=delayed"));
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body.missions.map((mission: { id: string; status: string }) => [mission.id, mission.status])).toEqual([
+      ["DC-1058", "delayed"],
+      ["DC-1056", "delayed"],
+    ]);
+  });
+
+  it("rejects an unknown status", async () => {
+    const response = await getMissions(new Request("http://localhost/api/missions?status=holding"));
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({ error: "invalid_status" });
   });
 });
 
