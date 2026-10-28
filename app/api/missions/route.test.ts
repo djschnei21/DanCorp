@@ -16,7 +16,7 @@ afterEach(() => {
 
 describe("GET /api/missions", () => {
   it("returns the board in window order", async () => {
-    const response = await getMissions();
+    const response = await getMissions(new Request("http://localhost/api/missions"));
     expect(response.status).toBe(200);
     const body = await response.json();
     expect(body.missions).toHaveLength(12);
@@ -30,6 +30,14 @@ describe("GET /api/missions", () => {
     expect(body.missions[0].speedKmh).toBeGreaterThan(0);
     const windows = body.missions.map((mission: { windowStart: string }) => mission.windowStart);
     expect(windows).toEqual([...windows].sort((a, b) => a.localeCompare(b)));
+  });
+
+  it("filters by status when the query param is set", async () => {
+    const response = await getMissions(new Request("http://localhost/api/missions?status=delayed"));
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body.missions).toHaveLength(2);
+    expect(body.missions.every((mission: { status: string }) => mission.status === "delayed")).toBe(true);
   });
 });
 
